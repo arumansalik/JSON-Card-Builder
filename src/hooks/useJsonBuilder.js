@@ -95,11 +95,28 @@ export default function useJsonBuilder() {
         );
     }
 
+    function addChildField(parentId) {
+        setFields((prev) =>
+            prev.map((field) => {
+                if (field.id !== parentId) return field;
+
+                return {
+                    ...field,
+                    children: [
+                        ...field.children,
+                        createField(),
+                    ],
+                };
+            })
+        );
+    }
+
     return {
         fields,
         setFields,
         addField,
         deleteField,
         updateField,
+        addChildField,
     };
 }
