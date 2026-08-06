@@ -23,9 +23,6 @@ export function generateJSON(fields) {
                 json[field.key] = field.value;
                 break;
 
-            case "object":
-                json[field.key] = generateJSON(field.children);
-                break;
 
             default:
                 json[field.key] = field.value;

@@ -1,5 +1,5 @@
-import {FaTrash} from "react-icons/fa";
-import ArrayEditor from "./ArrayEditor";
+import { Trash2 } from "lucide-react";
+
 
 export default function FieldRow({
                                      field,
@@ -21,15 +21,17 @@ export default function FieldRow({
                 />
             </div>
 
-            <input
-                type="text"
-                placeholder="Value"
-                value={field.value}
-                onChange={(e) =>
-                    updateField(field.id, "value", e.target.value)
-                }
-                className="w-1/2 rounded-lg border p-3 outline-none"
-            />
+            {field.type !== "object" && field.type !== "array" && (
+                <input
+                    type="text"
+                    placeholder="Value"
+                    value={field.value}
+                    onChange={(e) =>
+                        updateField(field.id, "value", e.target.value)
+                    }
+                    className="w-1/2 rounded-lg border p-3 outline-none"
+                />
+            )}
 
             <select
                 value={field.type}
@@ -54,16 +56,14 @@ export default function FieldRow({
                     Array
                 </option>
 
-                <option value="object">
-                    Object
-                </option>
+
             </select>
 
             <button
                 onClick={() => deleteField(field.id)}
                 className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-500 px-4 text-white"
             >
-                <FaTrash/>
+                <Trash2 size={18}/>
             </button>
         </div>
     );

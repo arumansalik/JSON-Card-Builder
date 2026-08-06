@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { updateTree } from "../utils/treeHelpers";
+
 
 
 export const createField = (type = "string") => ({
@@ -65,13 +65,15 @@ export default function useJsonBuilder() {
      */
     function updateField(id, property, value) {
         setFields((prev) =>
-            updateTree(prev, id, (field) => {
+            prev.map((field) => {
+                if (field.id !== id) return field;
+
                 if (property === "type") {
                     return {
                         ...field,
                         type: value,
                         value: getDefaultValue(value),
-                        children: value === "object" ? [] : [],
+                        children: field.children,
                     };
                 }
 
@@ -83,17 +85,6 @@ export default function useJsonBuilder() {
         );
     }
 
-    function addChildField(parentId) {
-        setFields((prev) =>
-            updateTree(prev, parentId, (field) => ({
-                ...field,
-                children: [
-                    ...field.children,
-                    createField(),
-                ],
-            }))
-        );
-    }
 
     return {
         fields,
@@ -101,6 +92,5 @@ export default function useJsonBuilder() {
         addField,
         deleteField,
         updateField,
-        addChildField,
     };
 }
