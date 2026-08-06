@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import { updateTree } from "../utils/treeHelpers";
 
-/**
- * Creates a new field based on its type.
- */
+
 export const createField = (type = "string") => ({
     id: uuid(),
     key: "",
@@ -97,17 +96,13 @@ export default function useJsonBuilder() {
 
     function addChildField(parentId) {
         setFields((prev) =>
-            prev.map((field) => {
-                if (field.id !== parentId) return field;
-
-                return {
-                    ...field,
-                    children: [
-                        ...field.children,
-                        createField(),
-                    ],
-                };
-            })
+            updateTree(prev, parentId, (field) => ({
+                ...field,
+                children: [
+                    ...field.children,
+                    createField(),
+                ],
+            }))
         );
     }
 
