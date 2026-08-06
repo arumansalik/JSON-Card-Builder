@@ -69,21 +69,21 @@ export default function useJsonBuilder() {
             prev.map((field) => {
                 if (field.id !== id) return field;
 
-                /**
-                 * When changing the type,
-                 * reset the value accordingly.
-                 */
                 if (property === "type") {
                     return {
                         ...field,
                         type: value,
-                        value: getDefaultValue(value),
-
-                        // Objects will use children later
-                        children:
-                            value === "object"
+                        value:
+                            value === "array"
                                 ? []
-                                : field.children,
+                                : value === "boolean"
+                                    ? false
+                                    : value === "number"
+                                        ? 0
+                                        : value === "object"
+                                            ? null
+                                            : "",
+                        children: value === "object" ? [] : field.children,
                     };
                 }
 

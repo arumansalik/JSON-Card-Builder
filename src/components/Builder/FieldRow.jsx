@@ -1,4 +1,5 @@
 import {FaTrash} from "react-icons/fa";
+import ArrayEditor from "./ArrayEditor";
 
 export default function FieldRow({
                                      field,
@@ -37,9 +38,25 @@ export default function FieldRow({
                 }
                 className="rounded-lg border p-3"
             >
-                <option value="string">String</option>
-                <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
+                <option value="string">
+                    String
+                </option>
+
+                <option value="number">
+                    Number
+                </option>
+
+                <option value="boolean">
+                    Boolean
+                </option>
+
+                <option value="array">
+                    Array
+                </option>
+
+                <option value="object">
+                    Object
+                </option>
             </select>
 
             <button
