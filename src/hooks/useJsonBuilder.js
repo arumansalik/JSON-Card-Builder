@@ -65,24 +65,13 @@ export default function useJsonBuilder() {
      */
     function updateField(id, property, value) {
         setFields((prev) =>
-            prev.map((field) => {
-                if (field.id !== id) return field;
-
+            updateTree(prev, id, (field) => {
                 if (property === "type") {
                     return {
                         ...field,
                         type: value,
-                        value:
-                            value === "array"
-                                ? []
-                                : value === "boolean"
-                                    ? false
-                                    : value === "number"
-                                        ? 0
-                                        : value === "object"
-                                            ? null
-                                            : "",
-                        children: value === "object" ? [] : field.children,
+                        value: getDefaultValue(value),
+                        children: value === "object" ? [] : [],
                     };
                 }
 

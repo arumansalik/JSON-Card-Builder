@@ -1,11 +1,10 @@
 import useJsonBuilder from "../../hooks/useJsonBuilder";
 
-import FieldRow from "./FieldRow";
-import AddFieldButton from "./AddFieldButton";
 
+import AddFieldButton from "./AddFieldButton";
+import RecursiveField from "./RecursiveField";
 import JsonPreview from "../Preview/JsonPreview";
 import Toolbar from "../Toolbar/Toolbar";
-
 import { validateFields } from "../../utils/validator";
 
 export default function Builder() {
@@ -15,6 +14,7 @@ export default function Builder() {
         addField,
         deleteField,
         updateField,
+        addChildField
     } = useJsonBuilder();
 
     const errors = validateFields(fields);
@@ -72,11 +72,12 @@ export default function Builder() {
                             </div>
                         ) : (
                             fields.map((field) => (
-                                <FieldRow
+                                <RecursiveField
                                     key={field.id}
                                     field={field}
                                     updateField={updateField}
                                     deleteField={deleteField}
+                                    addChildField={addChildField}
                                     errors={errors}
                                 />
                             ))
