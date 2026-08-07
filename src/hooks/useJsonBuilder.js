@@ -37,11 +37,9 @@ function getDefaultValue(type) {
 
 export default function useJsonBuilder() {
 
-
-
-    const fields = history.state;
-
-    useAutoSave("json-card-builder", fields);
+    // ===============================
+    // Load saved builder
+    // ===============================
 
     const savedFields = (() => {
 
@@ -63,7 +61,22 @@ export default function useJsonBuilder() {
 
     })();
 
+    // ===============================
+    // History
+    // ===============================
+
     const history = useHistory(savedFields);
+
+    const fields = history.state;
+
+    // ===============================
+    // Auto Save
+    // ===============================
+
+    useAutoSave(
+        "json-card-builder",
+        fields
+    );
 
     /**
      * Internal helper
@@ -76,70 +89,92 @@ export default function useJsonBuilder() {
                 : updater;
 
         history.set(newFields);
+
     }
 
     /**
-     * Add a new field
+     * Add field
      */
     function addField(type = "string") {
+
         setFields((prev) => [
             ...prev,
             createField(type),
         ]);
+
     }
 
     /**
-     * Delete a field
+     * Delete field
      */
     function deleteField(id) {
+
         setFields((prev) =>
-            prev.filter((field) => field.id !== id)
+            prev.filter(
+                (field) => field.id !== id
+            )
         );
+
     }
 
     /**
-     * Update a field
+     * Update field
      */
     function updateField(id, property, value) {
+
         setFields((prev) =>
             prev.map((field) => {
 
-                if (field.id !== id) return field;
+                if (field.id !== id)
+                    return field;
 
                 if (property === "type") {
+
                     return {
                         ...field,
                         type: value,
                         value: getDefaultValue(value),
                         children: field.children,
                     };
+
                 }
 
                 return {
                     ...field,
                     [property]: value,
                 };
+
             })
         );
+
     }
 
     /**
      * Clear Builder
      */
     function clearFields() {
+
+        localStorage.removeItem(
+            "json-card-builder"
+        );
+
         history.set([]);
+
     }
 
     /**
      * Reset Builder
      */
     function resetFields() {
+
         history.set([
             createField(),
         ]);
+
     }
 
     return {
+
         fields,
 
         setFields,
@@ -156,5 +191,7 @@ export default function useJsonBuilder() {
 
         canUndo: history.canUndo,
         canRedo: history.canRedo,
+
     };
+
 }

@@ -22,6 +22,7 @@ export default function Builder() {
         redo,
         canUndo,
         canRedo,
+        clearFields,
     } = useJsonBuilder();
 
     const previewRef = useRef(null);
@@ -51,7 +52,7 @@ export default function Builder() {
 
                 <Toolbar
                     fields={fields}
-                    setFields={setFields}
+                    clearFields={clearFields}
                     previewRef={previewRef}
                     undo={undo}
                     redo={redo}

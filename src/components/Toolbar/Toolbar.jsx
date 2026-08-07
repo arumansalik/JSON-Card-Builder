@@ -12,7 +12,7 @@ import { generateJSON } from "../../utils/jsonHelpers";
 
 export default function Toolbar({
                                     fields,
-                                    setFields,
+                                    clearFields,
                                     previewRef,
 
                                     undo,
@@ -36,7 +36,9 @@ export default function Toolbar({
 
     const clearBuilder = () => {
 
-        setFields([]);
+        clearFields();
+
+        localStorage.removeItem("json-card-builder");
 
         toast.success("Builder cleared.");
 
