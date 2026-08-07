@@ -18,6 +18,10 @@ export default function Builder() {
         addField,
         deleteField,
         updateField,
+        undo,
+        redo,
+        canUndo,
+        canRedo,
     } = useJsonBuilder();
 
     const previewRef = useRef(null);
@@ -49,6 +53,10 @@ export default function Builder() {
                     fields={fields}
                     setFields={setFields}
                     previewRef={previewRef}
+                    undo={undo}
+                    redo={redo}
+                    canUndo={canUndo}
+                    canRedo={canRedo}
                 />
 
             </div>
