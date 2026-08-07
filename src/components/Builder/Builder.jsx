@@ -123,7 +123,7 @@ export default function Builder() {
 
             {/* ================= Main ================= */}
 
-            <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.1fr_1fr]">
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1fr_1.20fr]">
 
                 {/* ================================================= */}
                 {/* Builder */}
@@ -157,7 +157,7 @@ export default function Builder() {
 
                     {/* Body */}
 
-                    <div className="max-h-[72vh] overflow-y-auto bg-slate-50 p-8">
+                    <div className="bg-slate-50 p-8 space-y-6">
 
                         {fields.length === 0 ? (
 

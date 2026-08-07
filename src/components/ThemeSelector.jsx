@@ -1,45 +1,44 @@
 import {
-    MonitorSmartphone,
+    Monitor,
     Braces,
     Terminal,
-    Laptop,
 } from "lucide-react";
-
-const themes = [
-    {
-        id: "apple",
-        name: "Apple",
-        icon: MonitorSmartphone,
-    },
-    {
-        id: "vscode",
-        name: "VS Code",
-        icon: Laptop,
-    },
-    {
-        id: "github",
-        name: "GitHub",
-        icon: Braces,
-    },
-    {
-        id: "terminal",
-        name: "Terminal",
-        icon: Terminal,
-    },
-];
 
 export default function ThemeSelector({
                                           theme,
                                           setTheme,
                                       }) {
+
+    const themes = [
+        {
+            id: "apple",
+            label: "Apple",
+            icon: Monitor,
+        },
+        {
+            id: "vscode",
+            label: "VS Code",
+            icon: Monitor,
+        },
+        {
+            id: "github",
+            label: "GitHub",
+            icon: Braces,
+        },
+        {
+            id: "terminal",
+            label: "Terminal",
+            icon: Terminal,
+        },
+    ];
+
     return (
-        <div className="flex flex-wrap gap-3">
+
+        <div className="grid grid-cols-4 gap-3">
 
             {themes.map((item) => {
 
                 const Icon = item.icon;
-
-                const active = theme === item.id;
 
                 return (
 
@@ -47,28 +46,30 @@ export default function ThemeSelector({
                         key={item.id}
                         onClick={() => setTheme(item.id)}
                         className={`
-                            group
                             flex
                             items-center
-                            gap-3
+                            justify-center
+                            gap-2
                             rounded-xl
                             border
                             px-4
                             py-3
                             transition-all
-                            duration-300
+                            duration-200
+                            min-w-[130px]
+
                             ${
-                            active
-                                ? "border-black bg-black text-white shadow-lg"
-                                : "border-gray-200 bg-white hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md"
+                            theme === item.id
+                                ? "bg-black text-white border-black shadow-lg"
+                                : "bg-white text-black border-gray-300 hover:border-black hover:shadow"
                         }
                         `}
                     >
 
                         <Icon size={18} />
 
-                        <span className="text-sm font-semibold">
-                            {item.name}
+                        <span className="font-medium whitespace-nowrap">
+                            {item.label}
                         </span>
 
                     </button>
@@ -78,5 +79,7 @@ export default function ThemeSelector({
             })}
 
         </div>
+
     );
+
 }

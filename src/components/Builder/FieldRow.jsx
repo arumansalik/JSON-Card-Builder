@@ -17,7 +17,18 @@ export default function FieldRow({
 
             {/* Main Row */}
 
-            <div className="flex items-center gap-3">
+            <div
+                className={`
+        grid
+        gap-4
+        items-center
+        ${
+                    isArrayItem
+                        ? "grid-cols-[1fr_180px_56px]"
+                        : "grid-cols-[1.2fr_1.2fr_180px_56px]"
+                }
+    `}
+            >
 
                 {/* Hide key for array items */}
 
@@ -68,19 +79,24 @@ export default function FieldRow({
 
                 <button
                     onClick={() => deleteField(field.id)}
-                    className="flex
-h-14
-w-14
-items-center
-justify-center
-rounded-xl
-bg-red-500
-text-white
-transition
-hover:bg-red-600
-hover:scale-105"
+                    className="
+        h-[54px]
+        w-[54px]
+        shrink-0
+        rounded-xl
+        bg-red-500
+        text-white
+        flex
+        items-center
+        justify-center
+        transition-all
+        duration-200
+        hover:bg-red-600
+        hover:scale-105
+        active:scale-95
+    "
                 >
-                    <Trash2 size={18} />
+                    <Trash2 size={18}/>
                 </button>
 
             </div>
