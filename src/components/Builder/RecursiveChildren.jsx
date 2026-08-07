@@ -2,6 +2,7 @@ import FieldRow from "./FieldRow";
 
 export default function RecursiveChildren({
                                               childrenFields,
+                                              parentType,
                                               updateField,
                                               deleteField,
                                               addChildField,
@@ -11,7 +12,6 @@ export default function RecursiveChildren({
     if (!childrenFields?.length) return null;
 
     return (
-
         <div className="mt-4 ml-8 border-l-2 border-gray-200 pl-6 space-y-4">
 
             {childrenFields.map((child) => (
@@ -19,6 +19,7 @@ export default function RecursiveChildren({
                 <FieldRow
                     key={child.id}
                     field={child}
+                    parentType={parentType}
                     updateField={updateField}
                     deleteField={deleteField}
                     addChildField={addChildField}
@@ -28,7 +29,5 @@ export default function RecursiveChildren({
             ))}
 
         </div>
-
     );
-
 }

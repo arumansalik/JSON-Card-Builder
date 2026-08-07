@@ -6,10 +6,11 @@ import FieldRow from "../components/Builder/FieldRow";
 
 export default function SortableField({
                                           field,
+                                          parentType,
                                           updateField,
                                           deleteField,
+                                          addChildField,
                                           errors,
-    addChildField,
                                       }) {
 
     const {
@@ -34,16 +35,16 @@ export default function SortableField({
             ref={setNodeRef}
             style={style}
             className={`
-                mb-4
-                rounded-2xl
-                transition-all
-                duration-200
-                ${
+    mb-5
+    rounded-2xl
+    transition-all
+    duration-200
+    ${
                 isDragging
-                    ? "scale-[1.02] opacity-80 shadow-2xl z-50"
-                    : "hover:shadow-md"
+                    ? "scale-[1.02] shadow-2xl bg-white"
+                    : ""
             }
-            `}
+`}
         >
 
             <div className="flex items-start gap-3">
@@ -81,6 +82,7 @@ export default function SortableField({
 
                     <FieldRow
                         field={field}
+                        parentType={parentType}
                         updateField={updateField}
                         deleteField={deleteField}
                         addChildField={addChildField}

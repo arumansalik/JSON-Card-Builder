@@ -1,6 +1,8 @@
 import { v4 as uuid } from "uuid";
 import useHistory from "./useHistory";
 import useAutoSave from "./useAutoSave";
+import { updateTree } from "../utils/updateTree";
+import { deleteTree } from "../utils/deleteTree";
 
 export const createField = (type = "string") => ({
     id: uuid(),
@@ -112,9 +114,7 @@ export default function useJsonBuilder() {
     function deleteField(id) {
 
         setFields((prev) =>
-            prev.filter(
-                (field) => field.id !== id
-            )
+            deleteTree(prev, id)
         );
 
     }
@@ -125,26 +125,19 @@ export default function useJsonBuilder() {
     function updateField(id, property, value) {
 
         setFields((prev) =>
-            prev.map((field) => {
-
-                if (field.id !== id)
-                    return field;
+            updateTree(prev, id, (field) => {
 
                 if (property === "type") {
 
                     return {
-
                         ...field,
-
                         type: value,
-
                         value: getDefaultValue(value),
-
                         children:
-                            value === "object" || value === "array"
-                                ? field.children || []
+                            value === "object" ||
+                            value === "array"
+                                ? field.children
                                 : [],
-
                     };
 
                 }
@@ -161,32 +154,18 @@ export default function useJsonBuilder() {
 
     function addChildField(parentId) {
 
-        function addToTree(items) {
+        setFields((prev) =>
+            updateTree(prev, parentId, (field) => ({
 
-            return items.map((field) => {
+                ...field,
 
-                if (field.id === parentId) {
+                children: [
+                    ...(field.children || []),
+                    createField(),
+                ],
 
-                    return {
-                        ...field,
-                        children: [
-                            ...field.children,
-                            createField(),
-                        ],
-                    };
-
-                }
-
-                return {
-                    ...field,
-                    children: addToTree(field.children),
-                };
-
-            });
-
-        }
-
-        setFields((prev) => addToTree(prev));
+            }))
+        );
 
     }
 

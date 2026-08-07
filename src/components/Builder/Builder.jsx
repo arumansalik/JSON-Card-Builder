@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 
 import useJsonBuilder from "../../hooks/useJsonBuilder";
-// import useKeyboardShortcuts from "../../hooks/useKeyboardShortcuts";
 import Toolbar from "../Toolbar/Toolbar";
 import JsonPreview from "../Preview/JsonPreview";
 import ThemeSelector from "../ThemeSelector";
 
 import AddFieldButton from "./AddFieldButton";
 import SortableField from "../../dnd/SortableField";
+
 import {
     DndContext,
     closestCenter,
@@ -23,6 +23,7 @@ import {
 import { validateFields } from "../../utils/validator";
 
 export default function Builder() {
+
     const {
         fields,
         addField,
@@ -88,9 +89,10 @@ export default function Builder() {
     }
 
     return (
+
         <div className="space-y-8">
 
-            {/* ================= HEADER ================= */}
+            {/* ================= Header ================= */}
 
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
@@ -100,16 +102,17 @@ export default function Builder() {
                         JSON Card Studio
                     </h1>
 
-                    <p className="mt-3 max-w-2xl text-lg text-gray-500">
-                        Build, customize and export beautiful JSON cards.
+                    <p className="mt-3 text-lg text-gray-500 max-w-2xl">
+                        Build, customize and export beautiful JSON cards with nested objects,
+                        arrays and drag & drop.
                     </p>
 
                 </div>
 
                 <Toolbar
                     fields={fields}
-                    clearFields={clearFields}
                     previewRef={previewRef}
+                    clearFields={clearFields}
                     undo={undo}
                     redo={redo}
                     canUndo={canUndo}
@@ -118,48 +121,63 @@ export default function Builder() {
 
             </div>
 
-            {/* ================= MAIN ================= */}
+            {/* ================= Main ================= */}
 
-            <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1fr_1.2fr]">
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.1fr_1fr]">
 
-                {/* ================= BUILDER ================= */}
+                {/* ================================================= */}
+                {/* Builder */}
+                {/* ================================================= */}
 
-                <div className="rounded-3xl border border-gray-200 bg-white shadow-lg">
+                <div className="overflow-hidden rounded-[32px] border border-gray-200 bg-white shadow-[0_20px_70px_rgba(0,0,0,.08)]">
 
-                    <div className="border-b border-gray-200 p-6">
+                    {/* Header */}
 
-                        <h2 className="text-2xl font-bold">
-                            JSON Builder
-                        </h2>
+                    <div className="flex items-center justify-between border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white px-8 py-7">
 
-                        <p className="mt-2 text-gray-500">
-                            Create your JSON card using custom properties.
-                        </p>
+                        <div>
+
+                            <h2 className="text-3xl font-bold">
+                                JSON Builder
+                            </h2>
+
+                            <p className="mt-2 text-gray-500">
+                                Build nested JSON visually.
+                            </p>
+
+                        </div>
+
+                        <div className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white">
+
+                            {fields.length} Properties
+
+                        </div>
 
                     </div>
 
-                    <div className="space-y-5 p-6">
+                    {/* Body */}
+
+                    <div className="max-h-[72vh] overflow-y-auto bg-slate-50 p-8">
 
                         {fields.length === 0 ? (
 
-                            <div className="rounded-3xl border-2 border-dashed border-gray-300 py-20">
+                            <div className="rounded-3xl border border-dashed border-gray-300 bg-white py-20">
 
-                                <div
-                                    className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 text-3xl">
+                                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-50 text-4xl">
 
                                     📄
 
                                 </div>
 
-                                <h3 className="mt-5 text-xl text-center font-bold text-gray-800">
+                                <h3 className="mt-6 text-center text-2xl font-bold">
 
                                     Start Building
 
                                 </h3>
 
-                                <p className="mx-auto mt-2 max-w-xs text-center text-gray-500">
+                                <p className="mx-auto mt-3 max-w-sm text-center text-gray-500">
 
-                                    Click "Add Property" below to create your first JSON field.
+                                    Click Add Property below to create your first JSON field.
 
                                 </p>
 
@@ -167,78 +185,85 @@ export default function Builder() {
 
                         ) : (
 
-                            <div className="space-y-4">
-                                <DndContext
-                                    collisionDetection={closestCenter}
-                                    onDragEnd={handleDragEnd}
-                                    onDragStart={handleDragStart}
+                            <DndContext
+                                collisionDetection={closestCenter}
+                                onDragStart={handleDragStart}
+                                onDragEnd={handleDragEnd}
+                                autoScroll
+                            >
+
+                                <SortableContext
+                                    items={fields.map((f) => f.id)}
+                                    strategy={verticalListSortingStrategy}
                                 >
-                                    <SortableContext
-                                        items={fields.map((field) => field.id)}
-                                        strategy={verticalListSortingStrategy}
-                                    >
+
+                                    <div className="space-y-6">
+
                                         {fields.map((field) => (
+
                                             <SortableField
                                                 key={field.id}
                                                 field={field}
-                                                addChildField={addChildField}
+                                                parentType="object"
                                                 updateField={updateField}
                                                 deleteField={deleteField}
+                                                addChildField={addChildField}
                                                 errors={errors}
                                             />
+
                                         ))}
-                                    </SortableContext>
-                                    <DragOverlay>
 
-                                        {activeField ? (
+                                    </div>
 
-                                            <div
-                                                className="
-                rounded-2xl
-                bg-white
-                border
-                shadow-2xl
-                p-5
-                w-[420px]
-                rotate-2
-            "
-                                            >
+                                </SortableContext>
 
-                                                <div className="flex items-center gap-3">
+                                <DragOverlay>
 
-                                                    <div className="rounded-lg bg-gray-100 p-2">
+                                    {activeField && (
 
-                                                        ☰
+                                        <div className="w-[450px] rounded-3xl bg-white p-6 shadow-[0_25px_80px_rgba(0,0,0,.18)] rotate-2">
 
-                                                    </div>
+                                            <div className="flex items-center gap-4">
 
-                                                    <div>
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-xl">
 
-                                                        <p className="font-semibold">
+                                                    ☰
 
-                                                            {activeField.key || "Untitled"}
+                                                </div>
 
-                                                        </p>
+                                                <div>
 
-                                                        <p className="text-sm text-gray-500">
+                                                    <h3 className="text-lg font-bold">
 
-                                                            {activeField.type}
+                                                        {activeField.key || "Untitled"}
 
-                                                        </p>
+                                                    </h3>
 
-                                                    </div>
+                                                    <p className="capitalize text-gray-500">
+
+                                                        {activeField.type}
+
+                                                    </p>
 
                                                 </div>
 
                                             </div>
 
-                                        ) : null}
+                                        </div>
 
-                                    </DragOverlay>
-                                </DndContext>
-                            </div>
+                                    )}
+
+                                </DragOverlay>
+
+                            </DndContext>
 
                         )}
+
+                    </div>
+
+                    {/* Footer */}
+
+                    <div className="border-t border-gray-200 bg-white p-6">
 
                         <AddFieldButton
                             addField={addField}
@@ -248,52 +273,46 @@ export default function Builder() {
 
                 </div>
 
-                {/* ================= PREVIEW ================= */}
+                {/* ================================================= */}
+                {/* Preview */}
+                {/* ================================================= */}
 
-                <div className="rounded-3xl border border-gray-200 bg-white shadow-lg">
+                <div className="overflow-hidden rounded-[32px] border border-gray-200 bg-white shadow-[0_20px_70px_rgba(0,0,0,.08)]">
 
-                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-gray-100 px-8 py-7">
 
-                    <div className="border-b border-gray-200 px-6 py-5">
+                        <div>
 
-                        <div className="flex items-start justify-between">
+                            <h2 className="text-3xl font-bold">
 
-                            {/* Left */}
+                                Live Preview
 
-                            <div>
+                            </h2>
 
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    Live Preview
-                                </h2>
+                            <p className="mt-2 text-gray-500">
 
-                                <p className="mt-1 text-sm text-gray-500">
-                                    Preview exactly what will be exported.
-                                </p>
+                                Preview exactly what will be exported.
 
-                            </div>
-
-                            {/* Right */}
-
-                            <ThemeSelector
-                                theme={theme}
-                                setTheme={setTheme}
-                            />
+                            </p>
 
                         </div>
 
+                        <ThemeSelector
+                            theme={theme}
+                            setTheme={setTheme}
+                        />
+
                     </div>
 
+                    <div className="p-8">
 
+                        <JsonPreview
+                            ref={previewRef}
+                            fields={fields}
+                            theme={theme}
+                        />
 
-                {/* Preview */}
-
-                <div className="p-8">
-
-                    <JsonPreview
-                        ref={previewRef}
-                        fields={fields}
-                        theme={theme}
-                    />
+                    </div>
 
                 </div>
 
@@ -301,7 +320,6 @@ export default function Builder() {
 
         </div>
 
-</div>
-)
-    ;
+    );
+
 }

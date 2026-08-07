@@ -1,36 +1,70 @@
 export function generateJSON(fields = []) {
-    const json = {};
 
-    if (!Array.isArray(fields)) {
-        return json;
+    function build(nodes, isArray = false) {
+
+        if (isArray) {
+            return nodes.map((node) => {
+
+                if (node.type === "object") {
+                    return build(node.children || []);
+                }
+
+                if (node.type === "array") {
+                    return build(node.children || [], true);
+                }
+
+                switch (node.type) {
+
+                    case "number":
+                        return Number(node.value);
+
+                    case "boolean":
+                        return node.value === true || node.value === "true";
+
+                    default:
+                        return node.value;
+
+                }
+
+            });
+        }
+
+        const result = {};
+
+        nodes.forEach((node) => {
+
+            if (!node.key && !isArray) return;
+
+            switch (node.type) {
+
+                case "object":
+                    result[node.key] = build(node.children || []);
+                    break;
+
+                case "array":
+                    result[node.key] = build(node.children || [], true);
+                    break;
+
+                case "number":
+                    result[node.key] = Number(node.value);
+                    break;
+
+                case "boolean":
+                    result[node.key] =
+                        node.value === true ||
+                        node.value === "true";
+                    break;
+
+                default:
+                    result[node.key] = node.value;
+
+            }
+
+        });
+
+        return result;
     }
 
-    fields.forEach((field) => {
-        if (!field?.key?.trim()) return;
+    return build(fields);
 
-        switch (field.type) {
-            case "string":
-                json[field.key] = field.value;
-                break;
-
-            case "number":
-                json[field.key] = Number(field.value);
-                break;
-
-            case "boolean":
-                json[field.key] =
-                    field.value === true ||
-                    field.value === "true";
-                break;
-
-            case "array":
-                json[field.key] = field.value;
-                break;
-
-            default:
-                json[field.key] = field.value;
-        }
-    });
-
-    return json;
 }
