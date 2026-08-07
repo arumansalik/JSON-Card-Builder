@@ -6,8 +6,8 @@ export default function App() {
     return (
         <>
             <Layout>
-                <div className="mx-auto max-w-7xl p-10">
-                    <Builder />
+                <div className="mx-auto max-w-[1700px] px-8 py-10">
+                    <Builder/>
                 </div>
             </Layout>
             <Toaster position="top-right" reverseOrder={false} />

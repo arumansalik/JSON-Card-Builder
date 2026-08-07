@@ -1,12 +1,17 @@
 import toast from "react-hot-toast";
-import { Copy, Download, Trash2 } from "lucide-react";
+import {
+    Copy,
+    ImageDown,
+    Trash2,
+} from "lucide-react";
+import { exportCard} from "../../utils/exportCard.js";
 
 import { generateJSON } from "../../utils/jsonHelpers";
-import { downloadJSON } from "../../utils/downloader";
 
 export default function Toolbar({
                                     fields,
                                     setFields,
+                                    previewRef,
                                 }) {
     const json = generateJSON(fields);
 
@@ -20,7 +25,6 @@ export default function Toolbar({
 
     const clearBuilder = () => {
         setFields([]);
-
         toast.success("Builder Cleared");
     };
 
@@ -29,18 +33,18 @@ export default function Toolbar({
 
             <button
                 onClick={copyJSON}
-                className="flex items-center gap-2 rounded-lg bg-black px-5 py-2.5 text-white transition hover:bg-neutral-800"
+                className="flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold shadow-lg bg-black text-white transition hover:bg-neutral-800"
             >
                 <Copy size={18} />
                 Copy
             </button>
 
             <button
-                onClick={() => downloadJSON(json)}
-                className="flex items-center gap-2 rounded-lg bg-black px-5 py-2.5 text-white transition hover:bg-neutral-800"
+                onClick={() => exportCard(previewRef)}
+                className="flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold shadow-lg bg-black text-white transition hover:bg-neutral-800"
             >
-                <Download size={18} />
-                Download
+                <ImageDown size={18}/>
+                Export PNG
             </button>
 
             <button

@@ -1,18 +1,19 @@
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 
-export async function exportCard(cardRef) {
-    if (!cardRef.current) return;
+export async function exportCard(ref) {
+    if (!ref.current) return;
 
-    const canvas = await html2canvas(cardRef.current, {
-        scale: 3,
-        backgroundColor: "#ffffff",
-    });
+    try {
+        const dataUrl = await toPng(ref.current, {
+            pixelRatio: 3,
+            cacheBust: true,
+        });
 
-    const link = document.createElement("a");
-
-    link.download = "json-card.png";
-
-    link.href = canvas.toDataURL("image/png");
-
-    link.click();
+        const link = document.createElement("a");
+        link.download = "Business-Card.png";
+        link.href = dataUrl;
+        link.click();
+    } catch (error) {
+        console.error(error);
+    }
 }
