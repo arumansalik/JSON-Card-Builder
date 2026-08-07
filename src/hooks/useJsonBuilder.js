@@ -81,15 +81,8 @@ export default function useJsonBuilder() {
     /**
      * Internal helper
      */
-    function setFields(updater) {
-
-        const newFields =
-            typeof updater === "function"
-                ? updater(fields)
-                : updater;
-
-        history.set(newFields);
-
+    function setFields(valueOrUpdater) {
+        history.set(valueOrUpdater);
     }
 
     /**
@@ -97,11 +90,15 @@ export default function useJsonBuilder() {
      */
     function addField(type = "string") {
 
+        // Ignore React click events
+        if (typeof type !== "string") {
+            type = "string";
+        }
+
         setFields((prev) => [
             ...prev,
             createField(type),
         ]);
-
     }
 
     /**

@@ -4,10 +4,14 @@ export default function useAutoSave(key, value) {
 
     useEffect(() => {
 
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
-        );
+        try {
+            localStorage.setItem(
+                key,
+                JSON.stringify(value)
+            );
+        } catch (err) {
+            console.error("Auto Save Error:", err);
+        }
 
     }, [key, value]);
 
