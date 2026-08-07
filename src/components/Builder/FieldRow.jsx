@@ -1,11 +1,12 @@
 import { Trash2 } from "lucide-react";
-
+import RecursiveChildren from "./RecursiveChildren";
 
 export default function FieldRow({
                                      field,
                                     addChildField,
                                      updateField,
                                      deleteField,
+    errors
                                  }) {
     return (
         <div className="flex items-end gap-3">
@@ -35,28 +36,27 @@ export default function FieldRow({
 
             {(field.type === "object" || field.type === "array") && (
 
-                <button
-                    onClick={() => addChildField(field.id)}
-                    className="
-            mt-4
-            rounded-xl
-            border
-            border-dashed
-            border-gray-300
-            px-4
-            py-2
-            text-sm
-            font-medium
-            text-gray-600
-            transition
-            hover:border-black
-            hover:text-black
-        "
-                >
-                    + Add Child
-                </button>
+                <>
+                    <button
+                        onClick={() => addChildField(field.id)}
+                        className="mt-4 rounded-xl border border-dashed border-gray-300 px-4 py-2 text-sm font-medium hover:border-black"
+                    >
+                        + Add Child
+                    </button>
+
+                    <RecursiveChildren
+                        childrenFields={field.children}
+                        updateField={updateField}
+                        deleteField={deleteField}
+                        addChildField={addChildField}
+                        errors={errors}
+                    />
+
+                </>
 
             )}
+
+
 
             <select
                 value={field.type}
