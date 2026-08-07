@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import useHistory from "./useHistory";
+import useAutoSave from "./useAutoSave";
 
 export const createField = (type = "string") => ({
     id: uuid(),
@@ -36,11 +37,33 @@ function getDefaultValue(type) {
 
 export default function useJsonBuilder() {
 
-    const history = useHistory([
-        createField(),
-    ]);
+
 
     const fields = history.state;
+
+    useAutoSave("json-card-builder", fields);
+
+    const savedFields = (() => {
+
+        try {
+
+            const data = localStorage.getItem(
+                "json-card-builder"
+            );
+
+            return data
+                ? JSON.parse(data)
+                : [createField()];
+
+        } catch {
+
+            return [createField()];
+
+        }
+
+    })();
+
+    const history = useHistory(savedFields);
 
     /**
      * Internal helper
