@@ -159,6 +159,37 @@ export default function useJsonBuilder() {
 
     }
 
+    function addChildField(parentId) {
+
+        function addToTree(items) {
+
+            return items.map((field) => {
+
+                if (field.id === parentId) {
+
+                    return {
+                        ...field,
+                        children: [
+                            ...field.children,
+                            createField(),
+                        ],
+                    };
+
+                }
+
+                return {
+                    ...field,
+                    children: addToTree(field.children),
+                };
+
+            });
+
+        }
+
+        setFields((prev) => addToTree(prev));
+
+    }
+
     /**
      * Clear Builder
      */
@@ -190,6 +221,7 @@ export default function useJsonBuilder() {
         setFields,
 
         addField,
+        addChildField,
         deleteField,
         updateField,
 

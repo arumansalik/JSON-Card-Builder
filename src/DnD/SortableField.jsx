@@ -9,6 +9,7 @@ export default function SortableField({
                                           updateField,
                                           deleteField,
                                           errors,
+    addChildField,
                                       }) {
 
     const {
@@ -82,6 +83,7 @@ export default function SortableField({
                         field={field}
                         updateField={updateField}
                         deleteField={deleteField}
+                        addChildField={addChildField}
                         errors={errors}
                     />
 

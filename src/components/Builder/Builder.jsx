@@ -29,6 +29,7 @@ export default function Builder() {
         setFields,
         deleteField,
         updateField,
+        addChildField,
         undo,
         redo,
         canUndo,
@@ -180,6 +181,7 @@ export default function Builder() {
                                             <SortableField
                                                 key={field.id}
                                                 field={field}
+                                                addChildField={addChildField}
                                                 updateField={updateField}
                                                 deleteField={deleteField}
                                                 errors={errors}

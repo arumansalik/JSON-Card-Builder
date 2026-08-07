@@ -3,7 +3,7 @@ import { Trash2 } from "lucide-react";
 
 export default function FieldRow({
                                      field,
-
+                                    addChildField,
                                      updateField,
                                      deleteField,
                                  }) {
@@ -31,6 +31,31 @@ export default function FieldRow({
                     }
                     className="w-1/2 rounded-lg border p-3 outline-none"
                 />
+            )}
+
+            {(field.type === "object" || field.type === "array") && (
+
+                <button
+                    onClick={() => addChildField(field.id)}
+                    className="
+            mt-4
+            rounded-xl
+            border
+            border-dashed
+            border-gray-300
+            px-4
+            py-2
+            text-sm
+            font-medium
+            text-gray-600
+            transition
+            hover:border-black
+            hover:text-black
+        "
+                >
+                    + Add Child
+                </button>
+
             )}
 
             <select
