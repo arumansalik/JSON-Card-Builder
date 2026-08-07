@@ -7,15 +7,25 @@ import JsonPreview from "../Preview/JsonPreview";
 import ThemeSelector from "../ThemeSelector";
 
 import AddFieldButton from "./AddFieldButton";
-import FieldRow from "./FieldRow";
+import SortableField from "../../dnd/SortableField";
+import {
+    DndContext,
+    closestCenter,
+} from "@dnd-kit/core";
+
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+    arrayMove,
+} from "@dnd-kit/sortable";
 
 import { validateFields } from "../../utils/validator";
 
 export default function Builder() {
     const {
         fields,
-        setFields,
         addField,
+        setFields,
         deleteField,
         updateField,
         undo,
@@ -30,6 +40,29 @@ export default function Builder() {
     const [theme, setTheme] = useState("apple");
 
     const errors = validateFields(fields);
+    function handleDragEnd(event) {
+
+        const { active, over } = event;
+
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = fields.findIndex(
+            (item) => item.id === active.id
+        );
+
+        const newIndex = fields.findIndex(
+            (item) => item.id === over.id
+        );
+
+        const reordered = arrayMove(
+            fields,
+            oldIndex,
+            newIndex
+        );
+
+        setFields(reordered);
+
+    }
 
     return (
         <div className="space-y-8">
@@ -111,17 +144,31 @@ export default function Builder() {
 
                         ) : (
 
-                            fields.map((field) => (
+                            <DndContext
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
+                            >
 
-                                <FieldRow
-                                    key={field.id}
-                                    field={field}
-                                    updateField={updateField}
-                                    deleteField={deleteField}
-                                    errors={errors}
-                                />
+                                <SortableContext
+                                    items={fields.map((field) => field.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
 
-                            ))
+                                    {fields.map((field) => (
+
+                                        <SortableField
+                                            key={field.id}
+                                            field={field}
+                                            updateField={updateField}
+                                            deleteField={deleteField}
+                                            errors={errors}
+                                        />
+
+                                    ))}
+
+                                </SortableContext>
+
+                            </DndContext>
 
                         )}
 
