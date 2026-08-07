@@ -17,6 +17,7 @@ export default function SortableField({
         setNodeRef,
         transform,
         transition,
+        isDragging,
     } = useSortable({
         id: field.id,
     });
@@ -31,7 +32,17 @@ export default function SortableField({
         <div
             ref={setNodeRef}
             style={style}
-            className="mb-4"
+            className={`
+                mb-4
+                rounded-2xl
+                transition-all
+                duration-200
+                ${
+                isDragging
+                    ? "scale-[1.02] opacity-80 shadow-2xl z-50"
+                    : "hover:shadow-md"
+            }
+            `}
         >
 
             <div className="flex items-start gap-3">
@@ -41,12 +52,29 @@ export default function SortableField({
                 <button
                     {...attributes}
                     {...listeners}
-                    className="mt-4 cursor-grab rounded-lg border bg-gray-100 p-2 hover:bg-gray-200 active:cursor-grabbing"
+                    className="
+                        mt-4
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        border
+                        border-gray-200
+                        bg-gray-50
+                        text-gray-500
+                        transition-all
+                        hover:bg-gray-100
+                        hover:text-black
+                        active:cursor-grabbing
+                        cursor-grab
+                    "
                 >
                     <GripVertical size={18} />
                 </button>
 
-                {/* Original Field */}
+                {/* Field */}
 
                 <div className="flex-1">
 

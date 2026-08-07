@@ -144,31 +144,28 @@ export default function Builder() {
 
                         ) : (
 
-                            <DndContext
-                                collisionDetection={closestCenter}
-                                onDragEnd={handleDragEnd}
-                            >
-
-                                <SortableContext
-                                    items={fields.map((field) => field.id)}
-                                    strategy={verticalListSortingStrategy}
+                            <div className="space-y-4">
+                                <DndContext
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                    autoScroll
                                 >
-
-                                    {fields.map((field) => (
-
-                                        <SortableField
-                                            key={field.id}
-                                            field={field}
-                                            updateField={updateField}
-                                            deleteField={deleteField}
-                                            errors={errors}
-                                        />
-
-                                    ))}
-
-                                </SortableContext>
-
-                            </DndContext>
+                                    <SortableContext
+                                        items={fields.map((field) => field.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {fields.map((field) => (
+                                            <SortableField
+                                                key={field.id}
+                                                field={field}
+                                                updateField={updateField}
+                                                deleteField={deleteField}
+                                                errors={errors}
+                                            />
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
+                            </div>
 
                         )}
 
