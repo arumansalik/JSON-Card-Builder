@@ -42,7 +42,7 @@ export default function ExportStudio({
         grid
         h-full
         gap-10
-        xl:grid-cols-[430px_1fr]
+        xl:grid-cols-[500px_1fr]
     "
         >
 
@@ -53,14 +53,13 @@ export default function ExportStudio({
             <div
                 className="
         flex
-        min-h-[780px]
-        flex-col
-        rounded-[36px]
-                border
-                border-gray-200
-                bg-white
-                p-8
-                shadow-sm
+flex-col
+rounded-[36px]
+border
+border-gray-200
+bg-white
+p-10
+shadow-xl
             "
             >
 
@@ -86,29 +85,40 @@ export default function ExportStudio({
 
                 </div>
 
-                <div className="mt-8 space-y-8 overflow-y-auto pr-2">
+                <div className="mt-10 flex flex-1 flex-col gap-7">
+                    <div className="rounded-3xl border border-gray-200 bg-gray-50 p-7 shadow-sm">
+                        <AspectRatioSelector
+                            value={aspectRatio}
+                            onChange={setAspectRatio}
+                        />
+                    </div>
 
-                    <AspectRatioSelector
-                        value={aspectRatio}
-                        onChange={setAspectRatio}
-                    />
 
-                    <BackgroundSelector
-                        value={background}
-                        onChange={setBackground}
-                    />
+                    <div className="rounded-3xl border border-gray-200 bg-gray-50 p-7 shadow-sm">
+                        <BackgroundSelector
+                            value={background}
+                            onChange={setBackground}
+                        />
+                    </div>
 
-                    <PaddingSelector
-                        value={padding}
-                        onChange={setPadding}
-                    />
 
-                    <QualitySelector
-                        value={quality}
-                        onChange={setQuality}
-                    />
+                    <div className="rounded-3xl border border-gray-200 bg-gray-50 p-7 shadow-sm">
+                        <PaddingSelector
+                            value={padding}
+                            onChange={setPadding}
+                        />
+                    </div>
 
-                    <div className="rounded-2xl border p-5">
+
+
+                    <div className="rounded-3xl border border-gray-200 bg-gray-50 p-7 shadow-sm">
+                        <QualitySelector
+                            value={quality}
+                            onChange={setQuality}
+                        />
+                    </div>
+
+                    <div className="rounded-3xl border border-gray-200 bg-gray-50 p-7 shadow-sm">
 
                         <div className="mb-3 flex items-center gap-2">
 
@@ -127,13 +137,19 @@ export default function ExportStudio({
                             onChange={(e) => setFileName(e.target.value)}
                             placeholder="Business Card"
                             className="
-                            w-full
-                            rounded-xl
-                            border
-                            p-3
-                            outline-none
-                            focus:border-black
-                        "
+        mt-3
+        w-full
+        rounded-xl
+        border
+        border-gray-300
+        bg-white
+        px-4
+        py-3
+        text-base
+        outline-none
+        transition
+        focus:border-black
+    "
                         />
 
                     </div>
@@ -148,63 +164,113 @@ export default function ExportStudio({
 
             <div
                 className="
-                flex
-                h-full
-                flex-col
-                rounded-[32px]
-                border
-                border-gray-200
-                bg-white
-                p-8
-                shadow-sm
-            "
+        flex
+        min-h-[780px]
+        flex-col
+        rounded-[36px]
+        border
+        border-gray-200
+        bg-gradient-to-br
+        from-slate-50
+        via-white
+        to-slate-100
+        p-10
+        shadow-sm
+    "
             >
 
-                {/* Preview Header */}
+                {/* Hero */}
 
-                <div className="mb-8 border-b border-gray-200 pb-6">
+                <div
+                    className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-black text-white shadow-xl">
 
-                    <h2 className="text-3xl font-black">
+                    <Download size={40}/>
 
-                        Live Preview
+                </div>
+
+                <div className="mt-8 text-center">
+
+                    <h2 className="text-4xl font-black tracking-tight text-gray-900">
+
+                        Ready to Export
 
                     </h2>
 
-                    <p className="mt-2 text-gray-500">
+                    <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-gray-500">
 
-                        Preview exactly what will be exported.
+                        Your JSON Card is ready.
+
+                        Configure the export settings on the left and click
+                        <span className="font-semibold text-black"> Export PNG </span>
+                        to download a beautiful high-quality image.
 
                     </p>
 
                 </div>
 
-                <div
-                    className="
-        flex-1
-        flex
-        items-center
-        justify-center
-        rounded-3xl
-        border-2
-        border-dashed
-        border-gray-300
-        bg-gray-50
-    "
-                >
+                {/* Features */}
 
-                    <div className="text-center">
+                <div className="mt-12 grid grid-cols-2 gap-5">
 
-                        <h3 className="text-2xl font-bold">
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
 
-                            Live Preview
+                        <h3 className="font-bold text-gray-900">
+
+                            High Resolution
 
                         </h3>
 
-                        <p className="mt-3 text-gray-500">
+                        <p className="mt-2 text-sm leading-6 text-gray-500">
 
-                            The preview is shown on the main Builder page.
+                            Export crisp PNG images with multiple quality options.
 
-                            Export Studio only changes the export settings.
+                        </p>
+
+                    </div>
+
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
+                        <h3 className="font-bold text-gray-900">
+
+                            Custom Layout
+
+                        </h3>
+
+                        <p className="mt-2 text-sm leading-6 text-gray-500">
+
+                            Adjust padding, aspect ratio and background before exporting.
+
+                        </p>
+
+                    </div>
+
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
+                        <h3 className="font-bold text-gray-900">
+
+                            Professional Themes
+
+                        </h3>
+
+                        <p className="mt-2 text-sm leading-6 text-gray-500">
+
+                            Every selected theme is exported exactly as shown.
+
+                        </p>
+
+                    </div>
+
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
+                        <h3 className="font-bold text-gray-900">
+
+                            Instant Download
+
+                        </h3>
+
+                        <p className="mt-2 text-sm leading-6 text-gray-500">
+
+                            One click is all it takes to generate your JSON card.
 
                         </p>
 
@@ -214,43 +280,47 @@ export default function ExportStudio({
 
                 {/* Export Button */}
 
-                <button
-                    onClick={() => {
+                <div className="mt-auto pt-10">
 
-                        exportCard(
-                            previewRef,
-                            quality,
-                            fileName
-                        );
+                    <button
+                        onClick={() => {
 
-                        onClose();
+                            exportCard(
+                                previewRef,
+                                quality,
+                                fileName
+                            );
 
-                    }}
-                    className="
-                    mt-8
-                    flex
-                    h-16
-                    w-full
-                    items-center
-                    justify-center
-                    gap-3
-                    rounded-2xl
-                    bg-black
-                    text-xl
-                    font-bold
-                    text-white
-                    transition-all
-                    duration-300
-                    hover:scale-[1.01]
-                    hover:bg-neutral-800
-                "
-                >
+                            onClose();
 
-                    <Download size={24}/>
+                        }}
+                        className="
+                flex
+                h-16
+                w-full
+                items-center
+                justify-center
+                gap-3
+                rounded-2xl
+                bg-black
+                text-xl
+                font-bold
+                text-white
+                shadow-xl
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:bg-neutral-800
+            "
+                    >
 
-                    Export PNG
+                        <Download size={24}/>
 
-                </button>
+                        Export PNG
+
+                    </button>
+
+                </div>
 
             </div>
 
