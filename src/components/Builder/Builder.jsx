@@ -42,6 +42,18 @@ export default function Builder() {
 
     const [theme, setTheme] = useState("apple");
 
+    const [aspectRatio, setAspectRatio] = useState("16:9");
+
+    const [background, setBackground] = useState("white");
+
+    const [padding, setPadding] = useState(32);
+
+    const [quality, setQuality] = useState(2);
+
+    const [shadow, setShadow] = useState(true);
+
+    const [fileName, setFileName] = useState("Business Card");
+
     const [activeField, setActiveField] = useState(null);
 
     const errors = validateFields(fields);
@@ -310,6 +322,10 @@ export default function Builder() {
                             ref={previewRef}
                             fields={fields}
                             theme={theme}
+                            aspectRatio={aspectRatio}
+                            background={background}
+                            padding={padding}
+                            shadow={shadow}
                         />
 
                     </div>

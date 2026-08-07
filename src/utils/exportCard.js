@@ -1,19 +1,24 @@
-import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 
-export async function exportCard(ref) {
-    if (!ref.current) return;
+export async function exportCard(previewRef, quality = 2) {
 
-    try {
-        const dataUrl = await toPng(ref.current, {
-            pixelRatio: 3,
-            cacheBust: true,
-        });
+    if (!previewRef?.current) return;
 
-        const link = document.createElement("a");
-        link.download = "Business-Card.png";
-        link.href = dataUrl;
-        link.click();
-    } catch (error) {
-        console.error(error);
-    }
+    const canvas = await html2canvas(
+        previewRef.current,
+        {
+            scale: quality,
+            useCORS: true,
+            backgroundColor: null,
+        }
+    );
+
+    const link = document.createElement("a");
+
+    link.download = "json-card.png";
+
+    link.href = canvas.toDataURL("image/png");
+
+    link.click();
+
 }

@@ -8,6 +8,7 @@ import AspectRatioSelector from "./AspectRatioSelector";
 import useExportSettings from "../../hooks/useExportSettings";
 import BackgroundSelector from "./BackgroundSelector";
 import PaddingSelector from "./PaddingSelector";
+import QualitySelector from "./QualitySelector";
 
 export default function ExportStudio({
 
@@ -75,10 +76,17 @@ export default function ExportStudio({
                 }
             />
 
+            <QualitySelector
+                value={settings.quality}
+                onChange={(quality) =>
+                    updateSetting("quality", quality)
+                }
+            />
+
             <button
                 onClick={() => {
 
-                    exportCard(previewRef);
+                    exportCard(previewRef, settings.quality);
 
                     onClose();
 
