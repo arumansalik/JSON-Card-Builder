@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import useJsonBuilder from "../../hooks/useJsonBuilder";
-
+import SettingsPanel from "../Settings/SettingsPanel";
 import Toolbar from "../Toolbar/Toolbar";
 import JsonPreview from "../Preview/JsonPreview";
 import ThemeSelector from "../ThemeSelector";
@@ -146,7 +146,6 @@ export default function Builder() {
                                 ref={previewRef}
                                 fields={fields}
                                 theme={theme}
-                                aspectRatio={aspectRatio}
                             />
 
                         </div>
@@ -159,94 +158,12 @@ export default function Builder() {
                 {/* SETTINGS */}
                 {/* ====================================================== */}
 
-                <div className="space-y-6">
-
-                    {/* Theme */}
-
-                    <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
-
-                        <h2 className="text-xl font-bold">
-                            Appearance
-                        </h2>
-
-                        <p className="mt-2 text-sm text-gray-500">
-                            Customize your JSON card.
-                        </p>
-
-                        <div className="mt-6">
-
-                            <ThemeSelector
-                                theme={theme}
-                                setTheme={setTheme}
-                            />
-
-                        </div>
-
-                    </div>
-
-                    {/* Aspect Ratio */}
-
-                    <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
-
-                        <h2 className="text-xl font-bold">
-                            Aspect Ratio
-                        </h2>
-
-                        <p className="mt-2 text-sm text-gray-500">
-                            Choose the export size.
-                        </p>
-
-                        <div className="mt-6 grid grid-cols-2 gap-3">
-
-                            {[
-                                "1:1",
-                                "16:9",
-                                "9:16",
-                                "4:5",
-                                "3:4",
-                                "A4",
-                            ].map((ratio) => (
-
-                                <button
-                                    key={ratio}
-                                    onClick={() => setAspectRatio(ratio)}
-                                    className={`rounded-xl border px-4 py-3 text-sm font-semibold transition
-                                    ${
-                                        aspectRatio === ratio
-                                            ? "bg-black text-white"
-                                            : "hover:bg-gray-100"
-                                    }`}
-                                >
-                                    {ratio}
-                                </button>
-
-                            ))}
-
-                        </div>
-
-                    </div>
-
-                    {/* Export */}
-
-                    <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
-
-                        <h2 className="text-xl font-bold">
-                            Export
-                        </h2>
-
-                        <p className="mt-2 text-sm text-gray-500">
-                            Download your JSON card as a PNG.
-                        </p>
-
-                        <button
-                            className="mt-6 w-full rounded-xl bg-black py-3 font-semibold text-white transition hover:bg-neutral-800"
-                        >
-                            Export PNG
-                        </button>
-
-                    </div>
-
-                </div>
+                <SettingsPanel
+                    theme={theme}
+                    setTheme={setTheme}
+                    aspectRatio={aspectRatio}
+                    setAspectRatio={setAspectRatio}
+                />
 
             </div>
 
