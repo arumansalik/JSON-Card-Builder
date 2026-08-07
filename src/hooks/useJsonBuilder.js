@@ -4,17 +4,20 @@ import useAutoSave from "./useAutoSave";
 
 export const createField = (type = "string") => ({
     id: uuid(),
+
     key: "",
+
     type,
+
     value: getDefaultValue(type),
+
     children: [],
 });
 
-/**
- * Returns the default value for each field type.
- */
 function getDefaultValue(type) {
+
     switch (type) {
+
         case "string":
             return "";
 
@@ -28,11 +31,13 @@ function getDefaultValue(type) {
             return [];
 
         case "object":
-            return null;
+            return {};
 
         default:
             return "";
+
     }
+
 }
 
 export default function useJsonBuilder() {
@@ -128,10 +133,18 @@ export default function useJsonBuilder() {
                 if (property === "type") {
 
                     return {
+
                         ...field,
+
                         type: value,
+
                         value: getDefaultValue(value),
-                        children: field.children,
+
+                        children:
+                            value === "object" || value === "array"
+                                ? field.children || []
+                                : [],
+
                     };
 
                 }
