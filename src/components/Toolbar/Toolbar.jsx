@@ -6,7 +6,9 @@ import {
     Undo2,
     Redo2,
 } from "lucide-react";
-
+import { useState } from "react";
+import ExportModal from "../ExportStudio/ExportModal";
+import ExportStudio from "../ExportStudio/ExportStudio";
 import { exportCard } from "../../utils/exportCard";
 import { generateJSON } from "../../utils/jsonHelpers";
 
@@ -23,6 +25,8 @@ export default function Toolbar({
                                 }) {
 
     const json = generateJSON(fields);
+
+    const [openExport, setOpenExport] = useState(false);
 
     const copyJSON = async () => {
 
@@ -108,7 +112,7 @@ export default function Toolbar({
             {/* Export */}
 
             <button
-                onClick={() => exportCard(previewRef)}
+                onClick={() => setOpenExport(true)}
                 className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 font-semibold text-white transition hover:bg-neutral-800"
             >
 
@@ -130,6 +134,18 @@ export default function Toolbar({
                 Clear
 
             </button>
+
+            <ExportModal
+                open={openExport}
+                onClose={() => setOpenExport(false)}
+            >
+
+                <ExportStudio
+                    previewRef={previewRef}
+                    onClose={() => setOpenExport(false)}
+                />
+
+            </ExportModal>
 
         </div>
 
