@@ -137,16 +137,22 @@ const JsonPreview = forwardRef(
                             language="json"
                             style={oneDark}
                             wrapLongLines
+                            showLineNumbers
                             customStyle={{
+
                                 margin: 0,
-                                padding: "28px",
+                                padding: "34px",
                                 background: current.background,
                                 color: current.text,
                                 borderRadius: 0,
-                                fontSize: "15px",
-                                lineHeight: "1.8",
+                                fontSize: "14px",
+                                fontWeight:500,
+                                fontFamily: "JetBrains Mono",
+                                lineHeight: "1.9",
                                 overflow: "visible",
                             }}
+
+
                         >
                             {JSON.stringify(json, null, 2)}
                         </SyntaxHighlighter>
