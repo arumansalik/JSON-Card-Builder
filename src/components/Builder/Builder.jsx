@@ -11,6 +11,7 @@ import SortableField from "../../dnd/SortableField";
 import {
     DndContext,
     closestCenter,
+    DragOverlay,
 } from "@dnd-kit/core";
 
 import {
@@ -39,12 +40,31 @@ export default function Builder() {
 
     const [theme, setTheme] = useState("apple");
 
+    const [activeField, setActiveField] = useState(null);
+
     const errors = validateFields(fields);
+
+    function handleDragStart(event) {
+
+        const field = fields.find(
+            (item) => item.id === event.active.id
+        );
+
+        setActiveField(field);
+
+    }
+
     function handleDragEnd(event) {
 
         const { active, over } = event;
 
-        if (!over || active.id === over.id) return;
+        if (!over || active.id === over.id) {
+
+            setActiveField(null);
+
+            return;
+
+        }
 
         const oldIndex = fields.findIndex(
             (item) => item.id === active.id
@@ -61,6 +81,8 @@ export default function Builder() {
         );
 
         setFields(reordered);
+
+        setActiveField(null);
 
     }
 
@@ -148,7 +170,7 @@ export default function Builder() {
                                 <DndContext
                                     collisionDetection={closestCenter}
                                     onDragEnd={handleDragEnd}
-                                    autoScroll
+                                    onDragStart={handleDragStart}
                                 >
                                     <SortableContext
                                         items={fields.map((field) => field.id)}
@@ -164,6 +186,53 @@ export default function Builder() {
                                             />
                                         ))}
                                     </SortableContext>
+                                    <DragOverlay>
+
+                                        {activeField ? (
+
+                                            <div
+                                                className="
+                rounded-2xl
+                bg-white
+                border
+                shadow-2xl
+                p-5
+                w-[420px]
+                rotate-2
+            "
+                                            >
+
+                                                <div className="flex items-center gap-3">
+
+                                                    <div className="rounded-lg bg-gray-100 p-2">
+
+                                                        ☰
+
+                                                    </div>
+
+                                                    <div>
+
+                                                        <p className="font-semibold">
+
+                                                            {activeField.key || "Untitled"}
+
+                                                        </p>
+
+                                                        <p className="text-sm text-gray-500">
+
+                                                            {activeField.type}
+
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        ) : null}
+
+                                    </DragOverlay>
                                 </DndContext>
                             </div>
 
