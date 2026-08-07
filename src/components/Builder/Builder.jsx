@@ -124,11 +124,34 @@ export default function Builder() {
                 <Toolbar
                     fields={fields}
                     previewRef={previewRef}
+
                     clearFields={clearFields}
+
                     undo={undo}
                     redo={redo}
+
                     canUndo={canUndo}
                     canRedo={canRedo}
+
+                    theme={theme}
+
+                    aspectRatio={aspectRatio}
+                    setAspectRatio={setAspectRatio}
+
+                    background={background}
+                    setBackground={setBackground}
+
+                    padding={padding}
+                    setPadding={setPadding}
+
+                    quality={quality}
+                    setQuality={setQuality}
+
+                    shadow={shadow}
+                    setShadow={setShadow}
+
+                    fileName={fileName}
+                    setFileName={setFileName}
                 />
 
             </div>

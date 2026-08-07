@@ -1,11 +1,14 @@
 import {
     Download,
     Image,
+    FileImage,
 } from "lucide-react";
 
+import JsonPreview from "../Preview/JsonPreview";
+
 import { exportCard } from "../../utils/exportCard";
+
 import AspectRatioSelector from "./AspectRatioSelector";
-import useExportSettings from "../../hooks/useExportSettings";
 import BackgroundSelector from "./BackgroundSelector";
 import PaddingSelector from "./PaddingSelector";
 import QualitySelector from "./QualitySelector";
@@ -14,91 +17,214 @@ export default function ExportStudio({
 
                                          previewRef,
 
+                                         fields,
+
+                                         theme,
+
+                                         aspectRatio,
+                                         setAspectRatio,
+
+                                         background,
+                                         setBackground,
+
+                                         padding,
+                                         setPadding,
+
+                                         quality,
+                                         setQuality,
+
+                                         shadow,
+                                         setShadow,
+
+                                         fileName,
+                                         setFileName,
+
                                          onClose,
 
                                      }) {
 
-    const {
-        settings,
-        updateSetting,
-    } = useExportSettings();
-
     return (
 
-        <div className="space-y-8">
+        <div className="grid gap-10 xl:grid-cols-[420px_1fr]">
 
-            <div className="rounded-2xl border border-gray-200 p-6">
+            {/* ====================================== */}
+            {/* LEFT PANEL */}
+            {/* ====================================== */}
 
-                <div className="flex items-center gap-3">
+            <div className="space-y-8">
 
-                    <Image />
+                {/* Header */}
 
-                    <h3 className="text-xl font-bold">
+                <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
 
-                        Export Image
+                    <div className="flex items-center gap-3">
 
-                    </h3>
+                        <Image size={22} />
+
+                        <h3 className="text-2xl font-bold">
+
+                            Export Settings
+
+                        </h3>
+
+                    </div>
+
+                    <p className="mt-2 text-gray-500">
+
+                        Customize your exported image.
+
+                    </p>
 
                 </div>
 
-                <p className="mt-2 text-gray-500">
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={setAspectRatio}
+                />
 
-                    Configure your image before exporting.
+                <BackgroundSelector
+                    value={background}
+                    onChange={setBackground}
+                />
 
-                </p>
+                <PaddingSelector
+                    value={padding}
+                    onChange={setPadding}
+                />
+
+                <QualitySelector
+                    value={quality}
+                    onChange={setQuality}
+                />
+
+                {/* Filename */}
+
+                <div className="rounded-3xl border bg-white p-6">
+
+                    <div className="mb-3 flex items-center gap-2">
+
+                        <FileImage size={18} />
+
+                        <h3 className="font-bold">
+
+                            File Name
+
+                        </h3>
+
+                    </div>
+
+                    <input
+                        value={fileName}
+                        onChange={(e) =>
+                            setFileName(e.target.value)
+                        }
+                        className="
+                            w-full
+                            rounded-xl
+                            border
+                            p-3
+                            outline-none
+                            focus:border-black
+                        "
+                        placeholder="Business Card"
+                    />
+
+                </div>
+
+                {/* Export */}
+
+                <button
+                    onClick={() => {
+
+                        exportCard(
+                            previewRef,
+                            quality,
+                            fileName
+                        );
+
+                        onClose();
+
+                    }}
+                    className="
+                        flex
+                        w-full
+                        items-center
+                        justify-center
+                        gap-3
+                        rounded-2xl
+                        bg-black
+                        px-6
+                        py-4
+                        text-lg
+                        font-bold
+                        text-white
+                        transition-all
+                        hover:scale-[1.02]
+                        hover:bg-neutral-800
+                    "
+                >
+
+                    <Download size={22} />
+
+                    Export PNG
+
+                </button>
 
             </div>
 
-            <AspectRatioSelector
-                value={settings.aspectRatio}
-                onChange={(ratio) =>
-                    updateSetting(
-                        "aspectRatio",
-                        ratio
-                    )
-                }
-            />
+            {/* ====================================== */}
+            {/* RIGHT PANEL */}
+            {/* ====================================== */}
 
-            <BackgroundSelector
-                value={settings.background}
-                onChange={(background) =>
-                    updateSetting(
-                        "background",
-                        background
-                    )
-                }
-            />
+            <div className="rounded-[32px] border border-gray-200 bg-white p-8 shadow-sm">
 
-            <PaddingSelector
-                value={settings.padding}
-                onChange={(padding) =>
-                    updateSetting("padding", padding)
-                }
-            />
+                <div className="mb-6 flex items-center justify-between">
 
-            <QualitySelector
-                value={settings.quality}
-                onChange={(quality) =>
-                    updateSetting("quality", quality)
-                }
-            />
+                    <div>
 
-            <button
-                onClick={() => {
+                        <h3 className="text-2xl font-bold">
 
-                    exportCard(previewRef, settings.quality);
+                            Live Preview
 
-                    onClose();
+                        </h3>
 
-                }}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-black px-6 py-4 text-lg font-semibold text-white transition hover:bg-neutral-800"
-            >
+                        <p className="text-gray-500">
 
-                <Download />
+                            This is exactly what will be exported.
 
-                Export PNG
+                        </p>
 
-            </button>
+                    </div>
+
+                </div>
+
+                <div className="flex justify-center">
+
+                    <div className="w-full max-w-4xl">
+
+                        <JsonPreview
+
+                            ref={previewRef}
+
+                            fields={fields}
+
+                            theme={theme}
+
+                            aspectRatio={aspectRatio}
+
+                            background={background}
+
+                            padding={padding}
+
+                            shadow={shadow}
+
+                        />
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
