@@ -15,7 +15,14 @@ const JsonPreview = forwardRef(
         {
             fields = [],
             theme = "apple",
+
+            aspectRatio = "16:9",
+
             background = "white",
+
+            padding = 32,
+
+            shadow = true,
         },
         ref
     ) => {
@@ -29,20 +36,60 @@ const JsonPreview = forwardRef(
             terminal,
         };
 
-        const backgrounds = {
-            white: "#ffffff",
-            dark: "#111827",
-            blue: "#2563eb",
-            purple: "#7c3aed",
-            orange: "#ea580c",
-            gradient:
-                "linear-gradient(135deg,#4f46e5,#9333ea,#ec4899)",
-        };
-
         const current = themeMap[theme] || apple;
 
-        const nameField = (fields || []).find(
-            (field) =>
+        const aspectRatioStyle = {
+            "16:9": {
+                width: "1200px",
+                aspectRatio: "16 / 9",
+            },
+
+            "1:1": {
+                width: "1000px",
+                aspectRatio: "1 / 1",
+            },
+
+            "9:16": {
+                width: "700px",
+                aspectRatio: "9 / 16",
+            },
+
+            "4:5": {
+                width: "900px",
+                aspectRatio: "4 / 5",
+            },
+
+            "3:4": {
+                width: "900px",
+                aspectRatio: "3 / 4",
+            },
+
+            "A4": {
+                width: "900px",
+                aspectRatio: "210 / 297",
+            },
+        };
+
+        const backgrounds = {
+
+            white: "#ffffff",
+
+            dark: "#111827",
+
+            blue: "#2563eb",
+
+            purple: "#7c3aed",
+
+            orange: "#ea580c",
+
+            gradient:
+                "linear-gradient(135deg,#4f46e5,#9333ea,#ec4899)",
+
+            transparent: "transparent",
+        };
+
+        const nameField = fields.find(
+            field =>
                 field.key?.trim().toLowerCase() === "name"
         );
 
@@ -53,47 +100,85 @@ const JsonPreview = forwardRef(
         return (
 
             <div
-                ref={ref}
-                className="w-full transition-all duration-300"
+                style={{
+                    ...aspectRatioStyle[aspectRatio],
+                    maxWidth: "100%",
+                }}
             >
 
-                {/* Canvas */}
+                {/* Export Canvas */}
 
-                <div className="rounded-3xl p-8 transition-all duration-300"
-                     style={{
-                         background:
-                             backgrounds[background] || "#ffffff",
-                     }}>
+                <div
+                    ref={ref}
+                    className="
+                    flex
+                    h-full
+                    w-full
+                    items-center
+                    justify-center
+                    rounded-3xl
+                    transition-all
+                    duration-300
+                "
+                    style={{
+                        padding: `${padding}px`,
+                        background:
+                            backgrounds[background] ?? "#ffffff",
+                    }}
+                >
 
                     {/* macOS Window */}
 
                     <div
-                        className="overflow-hidden rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,.18)]"
+                        className={`
+                        
+                        overflow-hidden
+                        rounded-3xl
+                        transition-all
+                        duration-300
+                        
+                    `}
                         style={{
-                            background: current.background,
+                            width: "100%",
+                            height: "100%",
+                            background:
+                            current.background,
+
                             border: `1px solid ${current.border}`,
+                            boxShadow: shadow
+                                ? "0 25px 70px rgba(0,0,0,.18)"
+                                : "none",
                         }}
                     >
 
-                        {/* ================= Header ================= */}
+                        {/* Header */}
 
                         <div
-                            className="flex items-center justify-between px-5 py-4"
+                            className="
+                            flex
+                            items-center
+                            justify-between
+                            px-6
+                            py-4
+                        "
                             style={{
-                                background: current.header,
-                                borderBottom: `1px solid ${current.border}`,
+                                background:
+                                current.header,
+
+                                borderBottom:
+                                    `1px solid ${current.border}`,
                             }}
                         >
-
-                            {/* Left */}
 
                             <div className="flex items-center gap-4">
 
                                 <div className="flex gap-2">
 
-                                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                                    <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
-                                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                                    <div className="h-3 w-3 rounded-full bg-red-500"/>
+
+                                    <div className="h-3 w-3 rounded-full bg-yellow-400"/>
+
+                                    <div className="h-3 w-3 rounded-full bg-green-500"/>
 
                                 </div>
 
@@ -103,23 +188,24 @@ const JsonPreview = forwardRef(
                                         color: current.text,
                                     }}
                                 >
+
                                     <FileJson size={16}/>
 
                                     <span className="text-sm font-semibold">
-                {fileName}
-            </span>
+
+                                    {fileName}
+
+                                </span>
 
                                 </div>
 
                             </div>
 
-                            {/* Right */}
-
                             <div
-                                className="hidden items-center gap-4 text-xs md:flex"
+                                className="hidden md:flex items-center gap-4 text-xs"
                                 style={{
                                     color: current.text,
-                                    opacity: .65,
+                                    opacity: .7,
                                 }}
                             >
 
@@ -131,30 +217,48 @@ const JsonPreview = forwardRef(
 
                         </div>
 
-                        {/* ================= JSON ================= */}
+                        {/* JSON */}
 
                         <SyntaxHighlighter
                             language="json"
                             style={oneDark}
-                            wrapLongLines
                             showLineNumbers
+                            wrapLongLines
                             customStyle={{
 
                                 margin: 0,
-                                padding: "34px",
-                                background: current.background,
-                                color: current.text,
+                                width: "100%",
+
+                                padding: "36px",
+
+                                background:
+                                current.background,
+
+                                color:
+                                current.text,
+
                                 borderRadius: 0,
+
                                 fontSize: "14px",
-                                fontWeight:500,
-                                fontFamily: "JetBrains Mono",
+
+                                fontWeight: 500,
+
                                 lineHeight: "1.9",
+
+                                fontFamily:
+                                    "JetBrains Mono",
+
                                 overflow: "visible",
+
                             }}
-
-
                         >
-                            {JSON.stringify(json, null, 2)}
+
+                            {JSON.stringify(
+                                json,
+                                null,
+                                2
+                            )}
+
                         </SyntaxHighlighter>
 
                     </div>
@@ -165,7 +269,6 @@ const JsonPreview = forwardRef(
 
         );
 
-    }
-);
+    });
 
 export default JsonPreview;

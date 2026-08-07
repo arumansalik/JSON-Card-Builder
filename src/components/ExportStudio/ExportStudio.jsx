@@ -4,7 +4,6 @@ import {
     FileImage,
 } from "lucide-react";
 
-import JsonPreview from "../Preview/JsonPreview";
 
 import { exportCard } from "../../utils/exportCard";
 
@@ -16,10 +15,6 @@ import QualitySelector from "./QualitySelector";
 export default function ExportStudio({
 
                                          previewRef,
-
-                                         fields,
-
-                                         theme,
 
                                          aspectRatio,
                                          setAspectRatio,
@@ -33,9 +28,6 @@ export default function ExportStudio({
                                          quality,
                                          setQuality,
 
-                                         shadow,
-                                         setShadow,
-
                                          fileName,
                                          setFileName,
 
@@ -45,27 +37,44 @@ export default function ExportStudio({
 
     return (
 
-        <div className="grid gap-10 xl:grid-cols-[420px_1fr]">
+        <div
+            className="
+        grid
+        h-full
+        gap-10
+        xl:grid-cols-[430px_1fr]
+    "
+        >
 
             {/* ====================================== */}
-            {/* LEFT PANEL */}
+            {/* LEFT SETTINGS */}
             {/* ====================================== */}
 
-            <div className="space-y-8">
+            <div
+                className="
+        flex
+        min-h-[780px]
+        flex-col
+        rounded-[36px]
+                border
+                border-gray-200
+                bg-white
+                p-8
+                shadow-sm
+            "
+            >
 
-                {/* Header */}
-
-                <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div>
 
                     <div className="flex items-center gap-3">
 
-                        <Image size={22} />
+                        <Image size={24}/>
 
-                        <h3 className="text-2xl font-bold">
+                        <h2 className="text-3xl font-black">
 
                             Export Settings
 
-                        </h3>
+                        </h2>
 
                     </div>
 
@@ -77,48 +86,47 @@ export default function ExportStudio({
 
                 </div>
 
-                <AspectRatioSelector
-                    value={aspectRatio}
-                    onChange={setAspectRatio}
-                />
+                <div className="mt-8 space-y-8 overflow-y-auto pr-2">
 
-                <BackgroundSelector
-                    value={background}
-                    onChange={setBackground}
-                />
+                    <AspectRatioSelector
+                        value={aspectRatio}
+                        onChange={setAspectRatio}
+                    />
 
-                <PaddingSelector
-                    value={padding}
-                    onChange={setPadding}
-                />
+                    <BackgroundSelector
+                        value={background}
+                        onChange={setBackground}
+                    />
 
-                <QualitySelector
-                    value={quality}
-                    onChange={setQuality}
-                />
+                    <PaddingSelector
+                        value={padding}
+                        onChange={setPadding}
+                    />
 
-                {/* Filename */}
+                    <QualitySelector
+                        value={quality}
+                        onChange={setQuality}
+                    />
 
-                <div className="rounded-3xl border bg-white p-6">
+                    <div className="rounded-2xl border p-5">
 
-                    <div className="mb-3 flex items-center gap-2">
+                        <div className="mb-3 flex items-center gap-2">
 
-                        <FileImage size={18} />
+                            <FileImage size={18}/>
 
-                        <h3 className="font-bold">
+                            <h3 className="font-bold">
 
-                            File Name
+                                File Name
 
-                        </h3>
+                            </h3>
 
-                    </div>
+                        </div>
 
-                    <input
-                        value={fileName}
-                        onChange={(e) =>
-                            setFileName(e.target.value)
-                        }
-                        className="
+                        <input
+                            value={fileName}
+                            onChange={(e) => setFileName(e.target.value)}
+                            placeholder="Business Card"
+                            className="
                             w-full
                             rounded-xl
                             border
@@ -126,12 +134,85 @@ export default function ExportStudio({
                             outline-none
                             focus:border-black
                         "
-                        placeholder="Business Card"
-                    />
+                        />
+
+                    </div>
 
                 </div>
 
-                {/* Export */}
+            </div>
+
+            {/* ====================================== */}
+            {/* RIGHT */}
+            {/* ====================================== */}
+
+            <div
+                className="
+                flex
+                h-full
+                flex-col
+                rounded-[32px]
+                border
+                border-gray-200
+                bg-white
+                p-8
+                shadow-sm
+            "
+            >
+
+                {/* Preview Header */}
+
+                <div className="mb-8 border-b border-gray-200 pb-6">
+
+                    <h2 className="text-3xl font-black">
+
+                        Live Preview
+
+                    </h2>
+
+                    <p className="mt-2 text-gray-500">
+
+                        Preview exactly what will be exported.
+
+                    </p>
+
+                </div>
+
+                <div
+                    className="
+        flex-1
+        flex
+        items-center
+        justify-center
+        rounded-3xl
+        border-2
+        border-dashed
+        border-gray-300
+        bg-gray-50
+    "
+                >
+
+                    <div className="text-center">
+
+                        <h3 className="text-2xl font-bold">
+
+                            Live Preview
+
+                        </h3>
+
+                        <p className="mt-3 text-gray-500">
+
+                            The preview is shown on the main Builder page.
+
+                            Export Studio only changes the export settings.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {/* Export Button */}
 
                 <button
                     onClick={() => {
@@ -146,83 +227,30 @@ export default function ExportStudio({
 
                     }}
                     className="
-                        flex
-                        w-full
-                        items-center
-                        justify-center
-                        gap-3
-                        rounded-2xl
-                        bg-black
-                        px-6
-                        py-4
-                        text-lg
-                        font-bold
-                        text-white
-                        transition-all
-                        hover:scale-[1.02]
-                        hover:bg-neutral-800
-                    "
+                    mt-8
+                    flex
+                    h-16
+                    w-full
+                    items-center
+                    justify-center
+                    gap-3
+                    rounded-2xl
+                    bg-black
+                    text-xl
+                    font-bold
+                    text-white
+                    transition-all
+                    duration-300
+                    hover:scale-[1.01]
+                    hover:bg-neutral-800
+                "
                 >
 
-                    <Download size={22} />
+                    <Download size={24}/>
 
                     Export PNG
 
                 </button>
-
-            </div>
-
-            {/* ====================================== */}
-            {/* RIGHT PANEL */}
-            {/* ====================================== */}
-
-            <div className="rounded-[32px] border border-gray-200 bg-white p-8 shadow-sm">
-
-                <div className="mb-6 flex items-center justify-between">
-
-                    <div>
-
-                        <h3 className="text-2xl font-bold">
-
-                            Live Preview
-
-                        </h3>
-
-                        <p className="text-gray-500">
-
-                            This is exactly what will be exported.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <div className="flex justify-center">
-
-                    <div className="w-full max-w-4xl">
-
-                        <JsonPreview
-
-                            ref={previewRef}
-
-                            fields={fields}
-
-                            theme={theme}
-
-                            aspectRatio={aspectRatio}
-
-                            background={background}
-
-                            padding={padding}
-
-                            shadow={shadow}
-
-                        />
-
-                    </div>
-
-                </div>
 
             </div>
 

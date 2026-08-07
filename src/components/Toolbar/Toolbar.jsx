@@ -13,19 +13,20 @@ import ExportStudio from "../ExportStudio/ExportStudio";
 import { generateJSON } from "../../utils/jsonHelpers";
 
 export default function Toolbar({
+
                                     fields,
 
                                     clearFields,
-
-                                    previewRef,
 
                                     undo,
                                     redo,
 
                                     canUndo,
                                     canRedo,
+                                    previewRef,
 
-                                    // Export Settings
+                                    exportPreviewRef,
+
                                     theme,
 
                                     aspectRatio,
@@ -45,6 +46,7 @@ export default function Toolbar({
 
                                     fileName,
                                     setFileName,
+
                                 }) {
     const [openExport, setOpenExport] = useState(false);
 
@@ -143,21 +145,24 @@ export default function Toolbar({
                 onClose={() => setOpenExport(false)}
             >
                 <ExportStudio
+
                     previewRef={previewRef}
-                    fields={fields}
-                    theme={theme}
+
                     aspectRatio={aspectRatio}
                     setAspectRatio={setAspectRatio}
+
                     background={background}
                     setBackground={setBackground}
+
                     padding={padding}
                     setPadding={setPadding}
+
                     quality={quality}
                     setQuality={setQuality}
-                    shadow={shadow}
-                    setShadow={setShadow}
+
                     fileName={fileName}
                     setFileName={setFileName}
+
                     onClose={() => setOpenExport(false)}
                 />
             </ExportModal>

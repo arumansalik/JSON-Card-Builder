@@ -40,6 +40,8 @@ export default function Builder() {
 
     const previewRef = useRef(null);
 
+
+
     const [theme, setTheme] = useState("apple");
 
     const [aspectRatio, setAspectRatio] = useState("16:9");
@@ -123,9 +125,9 @@ export default function Builder() {
 
                 <Toolbar
                     fields={fields}
-                    previewRef={previewRef}
-
                     clearFields={clearFields}
+
+                    previewRef={previewRef}
 
                     undo={undo}
                     redo={redo}
