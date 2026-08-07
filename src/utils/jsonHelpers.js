@@ -1,8 +1,12 @@
-export function generateJSON(fields) {
+export function generateJSON(fields = []) {
     const json = {};
 
+    if (!Array.isArray(fields)) {
+        return json;
+    }
+
     fields.forEach((field) => {
-        if (!field.key.trim()) return;
+        if (!field?.key?.trim()) return;
 
         switch (field.type) {
             case "string":
@@ -22,7 +26,6 @@ export function generateJSON(fields) {
             case "array":
                 json[field.key] = field.value;
                 break;
-
 
             default:
                 json[field.key] = field.value;

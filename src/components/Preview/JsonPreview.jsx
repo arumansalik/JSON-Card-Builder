@@ -13,8 +13,9 @@ import terminal from "../../themes/terminal";
 const JsonPreview = forwardRef(
     (
         {
-            fields,
+            fields = [],
             theme = "apple",
+            background = "white",
         },
         ref
     ) => {
@@ -28,9 +29,19 @@ const JsonPreview = forwardRef(
             terminal,
         };
 
+        const backgrounds = {
+            white: "#ffffff",
+            dark: "#111827",
+            blue: "#2563eb",
+            purple: "#7c3aed",
+            orange: "#ea580c",
+            gradient:
+                "linear-gradient(135deg,#4f46e5,#9333ea,#ec4899)",
+        };
+
         const current = themeMap[theme] || apple;
 
-        const nameField = fields.find(
+        const nameField = (fields || []).find(
             (field) =>
                 field.key?.trim().toLowerCase() === "name"
         );
@@ -48,12 +59,16 @@ const JsonPreview = forwardRef(
 
                 {/* Canvas */}
 
-                <div className="rounded-3xl bg-neutral-100 p-8">
+                <div className="rounded-3xl p-8 transition-all duration-300"
+                     style={{
+                         background:
+                             backgrounds[background] || "#ffffff",
+                     }}>
 
                     {/* macOS Window */}
 
                     <div
-                        className="overflow-hidden rounded-3xl shadow-2xl"
+                        className="overflow-hidden rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,.18)]"
                         style={{
                             background: current.background,
                             border: `1px solid ${current.border}`,
@@ -63,35 +78,54 @@ const JsonPreview = forwardRef(
                         {/* ================= Header ================= */}
 
                         <div
-                            className="flex items-center px-5 py-4"
+                            className="flex items-center justify-between px-5 py-4"
                             style={{
                                 background: current.header,
                                 borderBottom: `1px solid ${current.border}`,
                             }}
                         >
 
-                            <div className="flex gap-2">
+                            {/* Left */}
 
-                                <div className="h-3 w-3 rounded-full bg-red-500" />
+                            <div className="flex items-center gap-4">
 
-                                <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                                <div className="flex gap-2">
 
-                                <div className="h-3 w-3 rounded-full bg-green-500" />
+                                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                                    <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
+                                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+
+                                </div>
+
+                                <div
+                                    className="flex items-center gap-2"
+                                    style={{
+                                        color: current.text,
+                                    }}
+                                >
+                                    <FileJson size={16}/>
+
+                                    <span className="text-sm font-semibold">
+                {fileName}
+            </span>
+
+                                </div>
 
                             </div>
 
+                            {/* Right */}
+
                             <div
-                                className="mx-auto flex items-center gap-2"
+                                className="hidden items-center gap-4 text-xs md:flex"
                                 style={{
                                     color: current.text,
+                                    opacity: .65,
                                 }}
                             >
 
-                                <FileJson size={16} />
+                                <span>JSON</span>
 
-                                <span className="text-sm font-semibold">
-                                    {fileName}
-                                </span>
+                                <span>UTF-8</span>
 
                             </div>
 

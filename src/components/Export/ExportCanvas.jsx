@@ -35,6 +35,7 @@ export default function ExportCanvas({
             <JsonPreview
                 fields={fields}
                 theme={theme}
+                background={background}
             />
 
         </div>

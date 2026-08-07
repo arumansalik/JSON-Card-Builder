@@ -1,11 +1,14 @@
 import ThemeSelector from "../ThemeSelector";
 import AspectRatioSelector from "./AspectRatioSelector";
+import BackgroundSelector from "./BackgroundSelector";
 
 export default function SettingsPanel({
                                           theme,
                                           setTheme,
                                           aspectRatio,
                                           setAspectRatio,
+                                          background,
+                                          setBackground,
                                       }) {
     return (
         <div className="space-y-6">
@@ -50,6 +53,27 @@ export default function SettingsPanel({
                     <AspectRatioSelector
                         aspectRatio={aspectRatio}
                         setAspectRatio={setAspectRatio}
+                    />
+
+                </div>
+
+            </div>
+
+            <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
+
+                <h2 className="text-xl font-bold">
+                    Background
+                </h2>
+
+                <p className="mt-2 text-sm text-gray-500">
+                    Select the background used for your exported card.
+                </p>
+
+                <div className="mt-6">
+
+                    <BackgroundSelector
+                        background={background}
+                        setBackground={setBackground}
                     />
 
                 </div>

@@ -1,81 +1,75 @@
 import {
-    Laptop,
-    Code2,
-    Monitor,
+    MonitorSmartphone,
+    Braces,
     Terminal,
+    Laptop,
 } from "lucide-react";
+
+const themes = [
+    {
+        id: "apple",
+        name: "Apple",
+        icon: MonitorSmartphone,
+    },
+    {
+        id: "vscode",
+        name: "VS Code",
+        icon: Laptop,
+    },
+    {
+        id: "github",
+        name: "GitHub",
+        icon: Braces,
+    },
+    {
+        id: "terminal",
+        name: "Terminal",
+        icon: Terminal,
+    },
+];
 
 export default function ThemeSelector({
                                           theme,
                                           setTheme,
                                       }) {
-    const themes = [
-        {
-            id: "apple",
-            name: "Apple",
-            icon: Monitor,
-        },
-        {
-            id: "vscode",
-            name: "VS Code",
-            icon: Code2,
-        },
-        {
-            id: "github",
-            name: "GitHub",
-            icon: Laptop,
-        },
-        {
-            id: "terminal",
-            name: "Terminal",
-            icon: Terminal,
-        },
-    ];
-
     return (
+        <div className="flex flex-wrap gap-3">
 
-        <div className="grid grid-cols-4 gap-3">
+            {themes.map((item) => {
 
-            {themes.map((item)=>{
+                const Icon = item.icon;
 
-                const Icon=item.icon;
+                const active = theme === item.id;
 
-                return(
+                return (
 
                     <button
-
                         key={item.id}
-
-                        onClick={()=>setTheme(item.id)}
-
+                        onClick={() => setTheme(item.id)}
                         className={`
-rounded-2xl
-border
-p-4
-transition-all
-duration-300
-${
-                            theme===item.id
-
-                                ? "bg-black text-white border-black shadow-xl"
-
-                                : "bg-white hover:shadow-lg hover:-translate-y-1"
+                            group
+                            flex
+                            items-center
+                            gap-3
+                            rounded-xl
+                            border
+                            px-4
+                            py-3
+                            transition-all
+                            duration-300
+                            ${
+                            active
+                                ? "border-black bg-black text-white shadow-lg"
+                                : "border-gray-200 bg-white hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md"
                         }
-`}
-
+                        `}
                     >
 
-                        <div className="flex flex-col items-center">
+                        <Icon size={18} />
 
-                            <Icon size={26}/>
-
-                            <p className="mt-3 text-sm font-semibold">
-
-                                {item.name}
-
-                            </p>
-
-                        </div>
+                        <span className="text-sm font-semibold">
+                            {item.name}
+                        </span>
 
                     </button>
 
@@ -84,6 +78,5 @@ ${
             })}
 
         </div>
-
     );
 }
