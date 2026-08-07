@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { v4 as uuid } from "uuid";
-
-
+import useHistory from "./useHistory";
 
 export const createField = (type = "string") => ({
     id: uuid(),
@@ -37,9 +35,25 @@ function getDefaultValue(type) {
 }
 
 export default function useJsonBuilder() {
-    const [fields, setFields] = useState([
+
+    const history = useHistory([
         createField(),
     ]);
+
+    const fields = history.state;
+
+    /**
+     * Internal helper
+     */
+    function setFields(updater) {
+
+        const newFields =
+            typeof updater === "function"
+                ? updater(fields)
+                : updater;
+
+        history.set(newFields);
+    }
 
     /**
      * Add a new field
@@ -61,11 +75,12 @@ export default function useJsonBuilder() {
     }
 
     /**
-     * Update any property of a field
+     * Update a field
      */
     function updateField(id, property, value) {
         setFields((prev) =>
             prev.map((field) => {
+
                 if (field.id !== id) return field;
 
                 if (property === "type") {
@@ -85,12 +100,38 @@ export default function useJsonBuilder() {
         );
     }
 
+    /**
+     * Clear Builder
+     */
+    function clearFields() {
+        history.set([]);
+    }
+
+    /**
+     * Reset Builder
+     */
+    function resetFields() {
+        history.set([
+            createField(),
+        ]);
+    }
 
     return {
         fields,
+
         setFields,
+
         addField,
         deleteField,
         updateField,
+
+        clearFields,
+        resetFields,
+
+        undo: history.undo,
+        redo: history.redo,
+
+        canUndo: history.canUndo,
+        canRedo: history.canRedo,
     };
 }
