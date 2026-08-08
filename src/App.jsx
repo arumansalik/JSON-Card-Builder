@@ -1,17 +1,25 @@
-import Layout from "./components/Layout/Layout";
-import Builder from "./components/Builder/Builder";
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 
+import Landing from "./components/Landing/Landing";
+import Builder from "./components/Builder/Builder";
+
 export default function App() {
+    const [page, setPage] = useState("landing");
+
     return (
         <>
-            <Layout>
-                <div className="mx-auto max-w-[1700px] px-8 py-10">
-                    <Builder/>
-                </div>
-            </Layout>
-            <Toaster position="top-right" reverseOrder={false} />
-        </>
+            <Toaster position="top-right" />
 
+            <div className="min-h-screen bg-[#f7f8fa]">
+                {page === "landing" ? (
+                    <Landing
+                        onStart={() => setPage("builder")}
+                    />
+                ) : (
+                    <Builder />
+                )}
+            </div>
+        </>
     );
 }
