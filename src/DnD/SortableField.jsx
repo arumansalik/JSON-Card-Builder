@@ -12,11 +12,11 @@ export default function SortableField({
                                           addChildField,
                                           errors,
                                       }) {
-
     const {
         attributes,
         listeners,
         setNodeRef,
+        setActivatorNodeRef,
         transform,
         transition,
         isDragging,
@@ -26,39 +26,55 @@ export default function SortableField({
 
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition: transition || undefined,
+
+        // Keep the dragged item above the other fields
+        zIndex: isDragging ? 1000 : "auto",
+
+        // Prevent the browser from interfering with dragging
+        touchAction: "manipulation",
     };
 
     return (
-
         <div
             ref={setNodeRef}
             style={style}
             className={`
-    mb-5
-    rounded-2xl
-    transition-all
-    duration-200
-    ${
+                relative
+                mb-5
+                w-full
+                rounded-2xl
+                transition-shadow
+                duration-200
+                ${
                 isDragging
-                    ? "scale-[1.02] shadow-2xl bg-white"
-                    : ""
+                    ? "z-[1000] scale-[1.01] bg-white shadow-[0_25px_70px_rgba(0,0,0,0.18)]"
+                    : "bg-transparent"
             }
-`}
+            `}
         >
+            <div className="flex w-full items-start gap-3">
 
-            <div className="flex items-start gap-3">
-
-                {/* Drag Handle */}
+                {/* =====================================================
+                    DRAG HANDLE
+                ===================================================== */}
 
                 <button
+                    type="button"
+                    ref={setActivatorNodeRef}
                     {...attributes}
                     {...listeners}
+                    aria-label={`Drag ${field.key || "property"}`}
+                    title="Drag to reorder"
                     className="
                         mt-4
                         flex
                         h-10
                         w-10
+                        shrink-0
+                        cursor-grab
+                        touch-none
+                        select-none
                         items-center
                         justify-center
                         rounded-xl
@@ -67,19 +83,24 @@ export default function SortableField({
                         bg-gray-50
                         text-gray-500
                         transition-all
+                        duration-200
+                        hover:border-gray-300
                         hover:bg-gray-100
                         hover:text-black
                         active:cursor-grabbing
-                        cursor-grab
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-black/10
                     "
                 >
                     <GripVertical size={18} />
                 </button>
 
-                {/* Field */}
+                {/* =====================================================
+                    FIELD CONTENT
+                ===================================================== */}
 
-                <div className="flex-1">
-
+                <div className="min-w-0 flex-1">
                     <FieldRow
                         field={field}
                         parentType={parentType}
@@ -88,13 +109,9 @@ export default function SortableField({
                         addChildField={addChildField}
                         errors={errors}
                     />
-
                 </div>
 
             </div>
-
         </div>
-
     );
-
 }

@@ -19,7 +19,6 @@ import SortableField from "../../dnd/SortableField";
 import {
     DndContext,
     closestCenter,
-    DragOverlay,
 } from "@dnd-kit/core";
 
 import {
@@ -30,7 +29,8 @@ import {
 
 import { validateFields } from "../../utils/validator";
 
-export default function Builder({onDocs, onHome}) {
+
+export default function Builder({ onDocs, onHome }) {
 
     const {
         fields,
@@ -39,7 +39,6 @@ export default function Builder({onDocs, onHome}) {
         deleteField,
         updateField,
         addChildField,
-
 
         undo,
         redo,
@@ -51,11 +50,13 @@ export default function Builder({onDocs, onHome}) {
 
     } = useJsonBuilder();
 
+
     /* =========================================================
-       REFS
+       REF
     ========================================================= */
 
     const previewRef = useRef(null);
+
 
     /* =========================================================
        BUILDER STATE
@@ -75,7 +76,6 @@ export default function Builder({onDocs, onHome}) {
 
     const [fileName, setFileName] = useState("Business Card");
 
-    const [activeField, setActiveField] = useState(null);
 
     /* =========================================================
        VALIDATION
@@ -83,21 +83,9 @@ export default function Builder({onDocs, onHome}) {
 
     const errors = validateFields(fields);
 
-    /* =========================================================
-       DRAG START
-    ========================================================= */
-
-    function handleDragStart(event) {
-
-        const field = fields.find(
-            (item) => item.id === event.active.id
-        );
-
-        setActiveField(field || null);
-    }
 
     /* =========================================================
-       DRAG END
+       DRAG & DROP
     ========================================================= */
 
     function handleDragEnd(event) {
@@ -105,9 +93,6 @@ export default function Builder({onDocs, onHome}) {
         const { active, over } = event;
 
         if (!over || active.id === over.id) {
-
-            setActiveField(null);
-
             return;
         }
 
@@ -120,9 +105,6 @@ export default function Builder({onDocs, onHome}) {
         );
 
         if (oldIndex === -1 || newIndex === -1) {
-
-            setActiveField(null);
-
             return;
         }
 
@@ -133,20 +115,19 @@ export default function Builder({onDocs, onHome}) {
         );
 
         setFields(reordered);
-
-        setActiveField(null);
     }
 
+
     /* =========================================================
-       CLEAR BUILDER
+       CLEAR
     ========================================================= */
 
     function handleClear() {
 
         clearFields();
 
-        setActiveField(null);
     }
+
 
     /* =========================================================
        UI
@@ -155,6 +136,7 @@ export default function Builder({onDocs, onHome}) {
     return (
 
         <div className="builder-shell min-h-screen">
+
 
             {/* =====================================================
                 NAVBAR
@@ -165,12 +147,12 @@ export default function Builder({onDocs, onHome}) {
                     builder-navbar
                     fixed
                     left-1/2
-                    rounded-full
                     top-4
                     z-50
                     w-[calc(100%-32px)]
                     max-w-[1500px]
                     -translate-x-1/2
+                    rounded-full
                 "
             >
 
@@ -186,9 +168,19 @@ export default function Builder({onDocs, onHome}) {
                     "
                 >
 
+
                     {/* ================= BRAND ================= */}
 
-                    <div className="flex items-center gap-3">
+                    <button
+                        type="button"
+                        onClick={onHome}
+                        className="
+                            flex
+                            items-center
+                            gap-3
+                            text-left
+                        "
+                    >
 
                         <div
                             className="
@@ -204,8 +196,11 @@ export default function Builder({onDocs, onHome}) {
                                 shadow-lg
                             "
                         >
+
                             <Braces size={20} />
+
                         </div>
+
 
                         <div className="hidden sm:block">
 
@@ -232,7 +227,8 @@ export default function Builder({onDocs, onHome}) {
 
                         </div>
 
-                    </div>
+                    </button>
+
 
                     {/* ================= NAVIGATION ================= */}
 
@@ -264,6 +260,7 @@ export default function Builder({onDocs, onHome}) {
                             Builder
                         </button>
 
+
                         <button
                             type="button"
                             className="
@@ -281,25 +278,27 @@ export default function Builder({onDocs, onHome}) {
                             Templates
                         </button>
 
+
                         <button
                             type="button"
                             onClick={onDocs}
                             className="
-        rounded-lg
-        px-4
-        py-2
-        text-xs
-        font-semibold
-        text-gray-500
-        transition
-        hover:bg-white
-        hover:text-black
-    "
+                                rounded-lg
+                                px-4
+                                py-2
+                                text-xs
+                                font-semibold
+                                text-gray-500
+                                transition
+                                hover:bg-white
+                                hover:text-black
+                            "
                         >
                             Docs
                         </button>
 
                     </nav>
+
 
                     {/* ================= ACTIONS ================= */}
 
@@ -322,8 +321,11 @@ export default function Builder({onDocs, onHome}) {
                                 sm:flex
                             "
                         >
+
                             <CircleHelp size={18} />
+
                         </button>
+
 
                         <button
                             type="button"
@@ -342,8 +344,11 @@ export default function Builder({onDocs, onHome}) {
                                 sm:flex
                             "
                         >
+
                             <Settings size={18} />
+
                         </button>
+
 
                         <div
                             className="
@@ -375,6 +380,8 @@ export default function Builder({onDocs, onHome}) {
 
             </header>
 
+
+
             {/* =====================================================
                 MAIN
             ===================================================== */}
@@ -391,6 +398,7 @@ export default function Builder({onDocs, onHome}) {
                 "
             >
 
+
                 {/* =================================================
                     HERO
                 ================================================= */}
@@ -402,19 +410,20 @@ export default function Builder({onDocs, onHome}) {
                             flex
                             flex-col
                             gap-6
-                            xl:flex-row
-                            xl:items-center
-                            xl:justify-between
+                            lg:flex-row
+                            lg:items-end
+                            lg:justify-between
                         "
                     >
 
+
                         {/* HERO CONTENT */}
 
-                        <div>
+                        <div className="max-w-3xl">
 
                             <div
                                 className="
-                                    mb-3
+                                    mb-4
                                     inline-flex
                                     items-center
                                     gap-2
@@ -446,11 +455,12 @@ export default function Builder({onDocs, onHome}) {
 
                             </div>
 
+
                             <h1
                                 className="
                                     text-4xl
                                     font-black
-                                    tracking-[-0.045em]
+                                    tracking-[-0.05em]
                                     text-gray-950
                                     sm:text-5xl
                                     lg:text-6xl
@@ -465,6 +475,7 @@ export default function Builder({onDocs, onHome}) {
 
                             </h1>
 
+
                             <p
                                 className="
                                     mt-4
@@ -476,90 +487,58 @@ export default function Builder({onDocs, onHome}) {
                                 "
                             >
                                 Transform structured JSON into polished
-                                visual cards. Build nested data, customize
-                                every detail and export your creation.
+                                visual cards. Add properties, organize
+                                your data and export beautiful images.
                             </p>
 
                         </div>
 
-                        {/* STATS */}
 
-                        <div className="flex shrink-0 items-center gap-3">
+                        {/* WORKSPACE STATUS */}
 
-                            <div
+                        <div
+                            className="
+                                hidden
+                                items-center
+                                gap-2
+                                rounded-2xl
+                                border
+                                border-gray-200
+                                bg-white/70
+                                px-4
+                                py-3
+                                shadow-sm
+                                backdrop-blur-xl
+                                lg:flex
+                            "
+                        >
+
+                            <span
                                 className="
-                                    rounded-2xl
-                                    border
-                                    border-gray-200
-                                    bg-white/75
-                                    px-5
-                                    py-3
-                                    shadow-sm
-                                    backdrop-blur-xl
+                                    h-2
+                                    w-2
+                                    rounded-full
+                                    bg-green-500
+                                "
+                            />
+
+                            <span
+                                className="
+                                    text-sm
+                                    font-semibold
+                                    text-gray-600
                                 "
                             >
-
-                                <p
-                                    className="
-                                        text-[10px]
-                                        font-bold
-                                        uppercase
-                                        tracking-wider
-                                        text-gray-400
-                                    "
-                                >
-                                    Properties
-                                </p>
-
-                                <p className="mt-1 text-xl font-black">
-                                    {fields.length}
-                                </p>
-
-                            </div>
-
-                            <div
-                                className="
-                                    rounded-2xl
-                                    border
-                                    border-gray-200
-                                    bg-white/75
-                                    px-5
-                                    py-3
-                                    shadow-sm
-                                    backdrop-blur-xl
-                                "
-                            >
-
-                                <p
-                                    className="
-                                        text-[10px]
-                                        font-bold
-                                        uppercase
-                                        tracking-wider
-                                        text-gray-400
-                                    "
-                                >
-                                    Theme
-                                </p>
-
-                                <p
-                                    className="
-                                        mt-1
-                                        text-sm
-                                        font-black
-                                        capitalize
-                                    "
-                                >
-                                    {theme}
-                                </p>
-
-                            </div>
+                                Ready to build
+                            </span>
 
                         </div>
 
                     </div>
 
                 </section>
+
+
 
                 {/* =================================================
                     TOOLBAR
@@ -621,6 +600,8 @@ export default function Builder({onDocs, onHome}) {
 
                 </section>
 
+
+
                 {/* =================================================
                     MAIN GRID
                 ================================================= */}
@@ -635,6 +616,7 @@ export default function Builder({onDocs, onHome}) {
                         2xl:gap-8
                     "
                 >
+
 
                     {/* =================================================
                         JSON BUILDER
@@ -653,6 +635,7 @@ export default function Builder({onDocs, onHome}) {
                         "
                     >
 
+
                         {/* ================= BUILDER HEADER ================= */}
 
                         <div
@@ -667,76 +650,57 @@ export default function Builder({onDocs, onHome}) {
                             "
                         >
 
-                            <div className="flex items-center justify-between gap-4">
-
-                                <div className="flex items-center gap-4">
-
-                                    <div
-                                        className="
-                                            flex
-                                            h-11
-                                            w-11
-                                            shrink-0
-                                            items-center
-                                            justify-center
-                                            rounded-2xl
-                                            bg-black
-                                            text-white
-                                            shadow-lg
-                                        "
-                                    >
-                                        <Braces size={20} />
-                                    </div>
-
-                                    <div>
-
-                                        <h2
-                                            className="
-                                                text-xl
-                                                font-black
-                                                tracking-tight
-                                            "
-                                        >
-                                            JSON Builder
-                                        </h2>
-
-                                        <p
-                                            className="
-                                                mt-0.5
-                                                text-xs
-                                                text-gray-400
-                                            "
-                                        >
-                                            Structure your data visually
-                                        </p>
-
-                                    </div>
-
-                                </div>
+                            <div className="flex items-center gap-4">
 
                                 <div
                                     className="
-                                        rounded-full
+                                        flex
+                                        h-11
+                                        w-11
+                                        shrink-0
+                                        items-center
+                                        justify-center
+                                        rounded-2xl
                                         bg-black
-                                        px-4
-                                        py-2
-                                        text-xs
-                                        font-bold
                                         text-white
+                                        shadow-lg
                                     "
                                 >
 
-                                    {fields.length}
+                                    <Braces size={20} />
 
-                                    <span className="ml-1 text-white/50">
-                                        properties
-                                    </span>
+                                </div>
+
+
+                                <div>
+
+                                    <h2
+                                        className="
+                                            text-xl
+                                            font-black
+                                            tracking-tight
+                                        "
+                                    >
+                                        JSON Builder
+                                    </h2>
+
+                                    <p
+                                        className="
+                                            mt-0.5
+                                            text-xs
+                                            text-gray-400
+                                        "
+                                    >
+                                        Structure your data visually
+                                    </p>
 
                                 </div>
 
                             </div>
 
                         </div>
+
+
 
                         {/* =================================================
                             DYNAMIC BUILDER CONTENT
@@ -752,6 +716,7 @@ export default function Builder({onDocs, onHome}) {
                                 sm:p-7
                             "
                         >
+
 
                             {fields.length === 0 ? (
 
@@ -788,6 +753,7 @@ export default function Builder({onDocs, onHome}) {
                                         "
                                     />
 
+
                                     <div className="relative">
 
                                         <div
@@ -804,8 +770,11 @@ export default function Builder({onDocs, onHome}) {
                                                 shadow-xl
                                             "
                                         >
+
                                             <Braces size={27} />
+
                                         </div>
+
 
                                         <h3
                                             className="
@@ -816,6 +785,7 @@ export default function Builder({onDocs, onHome}) {
                                         >
                                             Start building
                                         </h3>
+
 
                                         <p
                                             className="
@@ -841,7 +811,6 @@ export default function Builder({onDocs, onHome}) {
 
                                 <DndContext
                                     collisionDetection={closestCenter}
-                                    onDragStart={handleDragStart}
                                     onDragEnd={handleDragEnd}
                                     autoScroll
                                 >
@@ -860,13 +829,27 @@ export default function Builder({onDocs, onHome}) {
                                             {fields.map((field) => (
 
                                                 <SortableField
+
                                                     key={field.id}
+
                                                     field={field}
+
                                                     parentType="object"
-                                                    updateField={updateField}
-                                                    deleteField={deleteField}
-                                                    addChildField={addChildField}
+
+                                                    updateField={
+                                                        updateField
+                                                    }
+
+                                                    deleteField={
+                                                        deleteField
+                                                    }
+
+                                                    addChildField={
+                                                        addChildField
+                                                    }
+
                                                     errors={errors}
+
                                                 />
 
                                             ))}
@@ -875,75 +858,14 @@ export default function Builder({onDocs, onHome}) {
 
                                     </SortableContext>
 
-                                    {/* ================= DRAG OVERLAY ================= */}
-
-                                    <DragOverlay>
-
-                                        {activeField ? (
-
-                                            <div
-                                                className="
-                                                    w-[430px]
-                                                    rotate-1
-                                                    rounded-3xl
-                                                    border
-                                                    border-gray-200
-                                                    bg-white
-                                                    p-5
-                                                    shadow-[0_30px_90px_rgba(0,0,0,.20)]
-                                                "
-                                            >
-
-                                                <div
-                                                    className="
-                                                        flex
-                                                        items-center
-                                                        gap-4
-                                                    "
-                                                >
-
-                                                    <div
-                                                        className="
-                                                            flex
-                                                            h-11
-                                                            w-11
-                                                            items-center
-                                                            justify-center
-                                                            rounded-xl
-                                                            bg-gray-100
-                                                        "
-                                                    >
-                                                        ☰
-                                                    </div>
-
-                                                    <div>
-
-                                                        <p className="font-bold">
-                                                            {activeField.key ||
-                                                                "Untitled"}
-                                                        </p>
-
-                                                        <p className="text-sm capitalize text-gray-500">
-                                                            {activeField.type}
-                                                        </p>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        ) : null}
-
-                                    </DragOverlay>
-
                                 </DndContext>
 
                             )}
 
+
+
                             {/* =================================================
                                 ADD PROPERTY
-                                IMPORTANT: INSIDE THE BUILDER CONTENT
                             ================================================= */}
 
                             <div
@@ -965,6 +887,8 @@ export default function Builder({onDocs, onHome}) {
 
                     </section>
 
+
+
                     {/* =================================================
                         LIVE PREVIEW
                     ================================================= */}
@@ -981,6 +905,7 @@ export default function Builder({onDocs, onHome}) {
                             backdrop-blur-2xl
                         "
                     >
+
 
                         {/* ================= PREVIEW HEADER ================= */}
 
@@ -1007,6 +932,7 @@ export default function Builder({onDocs, onHome}) {
                                 "
                             >
 
+
                                 <div className="flex items-center gap-4">
 
                                     <div
@@ -1021,8 +947,11 @@ export default function Builder({onDocs, onHome}) {
                                             bg-gray-100
                                         "
                                     >
+
                                         <Sparkles size={19} />
+
                                     </div>
+
 
                                     <div>
 
@@ -1050,6 +979,7 @@ export default function Builder({onDocs, onHome}) {
 
                                 </div>
 
+
                                 <ThemeSelector
                                     theme={theme}
                                     setTheme={setTheme}
@@ -1058,6 +988,8 @@ export default function Builder({onDocs, onHome}) {
                             </div>
 
                         </div>
+
+
 
                         {/* ================= PREVIEW ================= */}
 
@@ -1089,6 +1021,7 @@ export default function Builder({onDocs, onHome}) {
                                 "
                             />
 
+
                             <div
                                 className="
                                     pointer-events-none
@@ -1103,16 +1036,25 @@ export default function Builder({onDocs, onHome}) {
                                 "
                             />
 
+
                             <div className="relative">
 
                                 <JsonPreview
+
                                     ref={previewRef}
+
                                     fields={fields}
+
                                     theme={theme}
+
                                     aspectRatio={aspectRatio}
+
                                     background={background}
+
                                     padding={padding}
+
                                     shadow={shadow}
+
                                 />
 
                             </div>
