@@ -30,7 +30,7 @@ import {
 
 import { validateFields } from "../../utils/validator";
 
-export default function Builder() {
+export default function Builder({onDocs, onHome}) {
 
     const {
         fields,
@@ -39,6 +39,7 @@ export default function Builder() {
         deleteField,
         updateField,
         addChildField,
+
 
         undo,
         redo,
@@ -164,6 +165,7 @@ export default function Builder() {
                     builder-navbar
                     fixed
                     left-1/2
+                    rounded-full
                     top-4
                     z-50
                     w-[calc(100%-32px)]
@@ -281,17 +283,18 @@ export default function Builder() {
 
                         <button
                             type="button"
+                            onClick={onDocs}
                             className="
-                                rounded-lg
-                                px-4
-                                py-2
-                                text-xs
-                                font-semibold
-                                text-gray-500
-                                transition
-                                hover:bg-white
-                                hover:text-black
-                            "
+        rounded-lg
+        px-4
+        py-2
+        text-xs
+        font-semibold
+        text-gray-500
+        transition
+        hover:bg-white
+        hover:text-black
+    "
                         >
                             Docs
                         </button>
