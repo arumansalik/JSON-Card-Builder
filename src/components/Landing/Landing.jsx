@@ -1285,7 +1285,7 @@ export default function Landing({ onStart }) {
                     </p>
 
                     <p>
-                        © 2026 JSON Card Studio
+                        <a href="https://github.com/arumansalik" target="_blank" rel="noopener">© Aruman Salik</a>
                     </p>
 
                 </div>

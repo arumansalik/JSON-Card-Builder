@@ -1,104 +1,115 @@
-const backgrounds = [
-    {
-        id: "white",
-        name: "White",
-        color: "#ffffff",
-    },
-    {
-        id: "dark",
-        name: "Dark",
-        color: "#111827",
-    },
-    {
-        id: "gradient",
-        name: "Gradient",
-        gradient:
-            "linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899)",
-    },
-    {
-        id: "glass",
-        name: "Glass",
-        gradient:
-            "linear-gradient(135deg,#ffffff,#dbeafe)",
-    },
-    {
-        id: "transparent",
-        name: "Transparent",
-        transparent: true,
-    },
-];
-
 export default function BackgroundSelector({
                                                value,
                                                onChange,
                                            }) {
 
+    const backgrounds = [
+        {
+            id: "white",
+            label: "White",
+            preview: "#ffffff",
+        },
+        {
+            id: "dark",
+            label: "Dark",
+            preview: "#111827",
+        },
+        {
+            id: "gradient",
+            label: "Gradient",
+            preview:
+                "linear-gradient(135deg,#4f46e5,#9333ea,#ec4899)",
+        },
+        {
+            id: "glass",
+            label: "Glass",
+            preview:
+                "linear-gradient(135deg,#ffffff,#dbeafe)",
+        },
+        {
+            id: "transparent",
+            label: "Transparent",
+            preview:
+                "repeating-conic-gradient(#ddd 0% 25%, #fff 0% 50%) 50% / 16px 16px",
+        },
+    ];
+
     return (
+        <div className="w-full">
 
-        <div className="space-y-4">
+            <div className="grid grid-cols-5 gap-3">
 
-            <div>
+                {backgrounds.map((item) => {
 
-                <h3 className="text-lg font-bold">
+                    const active = value === item.id;
 
-                    Background
+                    return (
+                        <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => onChange(item.id)}
+                            className={`
+                                flex
+                                min-h-[112px]
+                                w-full
+                                flex-col
+                                items-center
+                                justify-between
+                                rounded-2xl
+                                border
+                                px-2
+                                py-4
+                                transition-all
+                                duration-200
+                                ${
+                                active
+                                    ? "border-black bg-white shadow-lg ring-1 ring-black"
+                                    : "border-gray-200 bg-white hover:border-gray-400"
+                            }
+                            `}
+                        >
 
-                </h3>
+                            {/* Preview */}
 
-                <p className="text-sm text-gray-500">
+                            <div
+                                className="
+                                    h-12
+                                    w-8
+                                    shrink-0
+                                    rounded-xl
+                                    border
+                                    border-gray-300
+                                    shadow-sm
+                                "
+                                style={{
+                                    background: item.preview,
+                                }}
+                            />
 
-                    Choose your export background.
+                            {/* Label */}
 
-                </p>
+                            <span
+                                className="
+                                    mt-3
+                                    block
+                                    w-full
+                                    text-center
+                                    text-xs
+                                    font-bold
+                                    leading-4
+                                    text-gray-900
+                                "
+                            >
+                                {item.label}
+                            </span>
 
-            </div>
+                        </button>
+                    );
 
-            <div className="grid grid-cols-5 gap-4">
-
-                {backgrounds.map((bg) => (
-
-                    <button
-                        key={bg.id}
-                        onClick={() => onChange(bg.id)}
-                        className={`
-                            rounded-2xl
-                            border
-                            p-3
-                            transition-all
-                            ${
-                            value === bg.id
-                                ? "border-black ring-2 ring-black"
-                                : "border-gray-300"
-                        }
-                        `}
-                    >
-
-                        <div
-                            className="mx-auto h-14 w-full rounded-xl border"
-                            style={{
-                                background:
-                                    bg.transparent
-                                        ? "repeating-conic-gradient(#ddd 0% 25%, white 0% 50%) 50% / 18px 18px"
-                                        : bg.gradient
-                                            ? bg.gradient
-                                            : bg.color,
-                            }}
-                        />
-
-                        <p className="mt-3 text-sm font-semibold">
-
-                            {bg.name}
-
-                        </p>
-
-                    </button>
-
-                ))}
+                })}
 
             </div>
 
         </div>
-
     );
-
 }

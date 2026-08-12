@@ -1,85 +1,61 @@
-const ratios = [
-    {
-        id: "16:9",
-        label: "16:9",
-    },
-    {
-        id: "1:1",
-        label: "1:1",
-    },
-    {
-        id: "9:16",
-        label: "9:16",
-    },
-    {
-        id: "4:5",
-        label: "4:5",
-    },
-    {
-        id: "A4",
-        label: "A4",
-    },
-];
-
 export default function AspectRatioSelector({
                                                 value,
                                                 onChange,
                                             }) {
 
+    const ratios = [
+        "16:9",
+        "1:1",
+        "9:16",
+        "4:5",
+        "A4",
+    ];
+
     return (
-
-        <div className="space-y-4">
-
-            <div>
-
-                <h3 className="text-lg font-bold">
-
-                    Aspect Ratio
-
-                </h3>
-
-                <p className="text-sm text-gray-500">
-
-                    Choose the export size.
-
-                </p>
-
-            </div>
+        <div className="w-full">
 
             <div className="grid grid-cols-5 gap-3">
 
-                {ratios.map((ratio) => (
+                {ratios.map((ratio) => {
 
-                    <button
-                        key={ratio.id}
-                        onClick={() => onChange(ratio.id)}
-                        className={`
-                            rounded-2xl
-                            border
-                            px-4
-                            py-5
-                            font-semibold
-                            transition-all
-                            duration-200
+                    const active = value === ratio;
 
-                            ${
-                            value === ratio.id
-                                ? "border-black bg-black text-white shadow-xl"
-                                : "border-gray-300 bg-white hover:border-black"
-                        }
-                        `}
-                    >
+                    return (
+                        <button
+                            key={ratio}
+                            type="button"
+                            onClick={() => onChange(ratio)}
+                            className={`
+                                flex
+                                min-h-[76px]
+                                w-full
+                                items-center
+                                justify-center
+                                rounded-2xl
+                                border
+                                px-3
+                                py-4
+                                text-sm
+                                font-bold
+                                transition-all
+                                duration-200
+                                ${
+                                active
+                                    ? "border-black bg-black text-white shadow-lg"
+                                    : "border-gray-200 bg-white text-gray-900 hover:border-gray-400"
+                            }
+                            `}
+                        >
+                            <span className="whitespace-nowrap">
+                                {ratio}
+                            </span>
+                        </button>
+                    );
 
-                        {ratio.label}
-
-                    </button>
-
-                ))}
+                })}
 
             </div>
 
         </div>
-
     );
-
 }
